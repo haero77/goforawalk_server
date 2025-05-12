@@ -49,7 +49,7 @@ dependencies {
 
     // GCP
     implementation("com.google.cloud:google-cloud-storage") // https://spring.io/projects/spring-cloud-gcp
-//    implementation("org.springframework.cloud:spring-cloud-gcp-storage:1.2.8.RELEASE")
+//    implementation("org.springframework.cloud:spring-cloud-gcp-storage:1.2.8.RELEASE") // https://mvnrepository.com/artifact/com.google.cloud/spring-cloud-gcp-starter-storage/2.0.0
 
     /**
      * test
