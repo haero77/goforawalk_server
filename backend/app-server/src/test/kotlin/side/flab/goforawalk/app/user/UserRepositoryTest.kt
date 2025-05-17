@@ -19,6 +19,7 @@ class UserRepositoryTest : BaseIntegrationTest() {
         val user = User(
             provider = OAuth2Provider.APPLE,
             providerUsername = "testProviderId",
+            nickname = "nickname",
         )
 
         val actual = sut.save(user)
@@ -31,6 +32,7 @@ class UserRepositoryTest : BaseIntegrationTest() {
         val user = User(
             provider = OAuth2Provider.KAKAO,
             providerUsername = "provider_username",
+            nickname = "nickname",
         )
         sut.save(user)
 

@@ -1,8 +1,9 @@
 package side.flab.goforawalk.app.domain.user.domain
 
 import jakarta.persistence.*
-import side.flab.goforawalk.app.domain.base.BaseEntity
+import side.flab.goforawalk.app.support.base.BaseEntity
 import side.flab.goforawalk.security.oauth2.OAuth2Provider
+import java.time.ZoneId
 import java.util.*
 
 @Entity
@@ -19,16 +20,9 @@ import java.util.*
         )
     ]
 )
-class User private constructor(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null,
-
+class User constructor(
     @Column(name = "email", length = 50)
     var email: String? = null,
-
-    @Column(name = "nickname", nullable = false, length = 50)
-    private var _nickname: String,
 
     @Column(name = "provider", nullable = false, updatable = false, length = 10)
     @Enumerated(EnumType.STRING)
@@ -37,45 +31,60 @@ class User private constructor(
     @Column(name = "provider_username", nullable = false, updatable = false, length = 30)
     val providerUsername: String,
 
-    @Column(name = "role", nullable = false, length = 10)
-    @Enumerated(EnumType.STRING)
-    var role: UserRole = UserRole.USER,
+    nickname: String,
+
+    @Column(name = "time_zone", nullable = false, length = 50)
+    val timeZone: String = "Asia/Seoul",
 ) : BaseEntity() {
-    var nickname: String
-        get() = _nickname
+
+    @Column(name = "nickname", nullable = false, length = 50)
+    var nickname: String = nickname
         set(value) {
             require(value.isNotBlank()) { "nickname must have text" }
-            _nickname = value
+            field = value
         }
 
-    constructor(
-        provider: OAuth2Provider,
-        providerUsername: String,
-    ) : this(
-        provider = provider,
-        providerUsername = providerUsername,
-        _nickname = generateRandomNickname(),
-    )
+    @Column(name = "role", nullable = false, length = 10)
+    @Enumerated(EnumType.STRING)
+    var role: UserRole = UserRole.USER // 유저 role 기본값이 USER이므로 생성자에서 받지 않음.
+
+    init {
+        this.nickname = nickname
+    }
 
     companion object {
+        fun of(
+            provider: OAuth2Provider,
+            providerUsername: String,
+        ): User {
+            return User(
+                provider = provider,
+                providerUsername = providerUsername,
+                nickname = generateRandomNickname(),
+            )
+        }
+
         private fun generateRandomNickname(): String {
             val uuid = UUID.randomUUID().toString()
             return "user_${uuid}"
         }
     }
 
-    fun changeNickname(newNickname: String) {
-        this.nickname = newNickname
+    fun updateNickname(nickname: String) {
+        this.nickname = nickname
+    }
+
+    fun getTimeZone(): ZoneId {
+        return ZoneId.of(timeZone)
     }
 
     override fun toString(): String {
         return "User(" +
-                "id=$id, " +
                 "email=$email, " +
                 "provider=$provider, " +
                 "providerUsername='$providerUsername', " +
-                "role=$role, " +
-                "nickname='$nickname'" +
+                "nickname='$nickname', " +
+                "role=$role" +
                 ")"
     }
 }
