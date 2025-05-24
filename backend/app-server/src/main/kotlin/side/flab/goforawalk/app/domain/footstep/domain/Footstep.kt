@@ -8,15 +8,16 @@ import side.flab.goforawalk.app.support.util.ClockHolder
 import java.time.LocalDate
 
 @Entity
-@Table(
-    name = "footstep",
-    uniqueConstraints = [
-        UniqueConstraint(
-            name = "uk_user_id_date",
-            columnNames = ["user_id", "date"]
-        )
-    ]
-)
+// todo: partial index를 이용해서 (user_id, date, entity_status = 'ACTIVE')로 유니크 제약조건 생성
+//@Table(
+//    name = "footstep",
+//    uniqueConstraints = [
+//        UniqueConstraint(
+//            name = "uk_user_id_date",
+//            columnNames = ["user_id", "date"]
+//        )
+//    ]
+//)
 @SQLRestriction(BaseEntity.SOFT_DELETE_RESTRICTION)
 class Footstep constructor(
     @ManyToOne(fetch = FetchType.LAZY)

@@ -7,11 +7,13 @@ import side.flab.goforawalk.app.support.util.ClockHolder
 
 @Component
 class FootstepCreator(
+    private val footstepDomainService: FootstepDomainService,
     private val footstepRepository: FootstepRepository,
     private val clockHolder: ClockHolder
 ) {
     @Transactional
     fun create(create: FootstepCreateDto): Long {
+        footstepDomainService.validateDailyFootstepLimit(create.user)
         val newFootStep = footstepRepository.save(create.toEntity(clockHolder))
         return newFootStep.id!!
     }
