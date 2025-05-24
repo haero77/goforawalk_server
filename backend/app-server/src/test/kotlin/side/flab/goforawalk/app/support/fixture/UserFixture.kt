@@ -7,13 +7,13 @@ import side.flab.goforawalk.security.oauth2.OAuth2Provider
 object UserFixture {
     private const val DEFAULT_EMAIL = "test@example.com"
     private const val DEFAULT_PROVIDER_USERNAME = "test-provider-username"
-    private const val DEFAULT_NICKNAME = "테스트유저"
+    private const val DEFAULT_NICKNAME = "산책왕"
 
     fun createSeoulUser(
         email: String? = DEFAULT_EMAIL,
         provider: OAuth2Provider = OAuth2Provider.KAKAO,
         providerUsername: String = DEFAULT_PROVIDER_USERNAME,
-        nickname: String
+        nickname: String = DEFAULT_NICKNAME
     ): User {
         return createUser(
             email = email,
