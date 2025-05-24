@@ -7,7 +7,7 @@ import java.time.ZonedDateTime
 data class FootstepDetailResponse(
     val userId: Long,
     val userNickname: String,
-    val footStepId: Long,
+    val footstepId: Long,
     val date: LocalDate,
     val imageUrl: String,
     val content: String? = null,
@@ -22,12 +22,16 @@ data class FootstepDetailResponse(
             return FootstepDetailResponse(
                 userId = user.id!!,
                 userNickname = user.nickname,
-                footStepId = footstep.id!!,
+                footstepId = footstep.id!!,
                 date = footstep.date,
                 imageUrl = footstep.imageUrl,
                 content = footstep.content,
                 createdAt = footstep.createdAtAsZonedDateTime()
             )
+        }
+
+        fun List<Footstep>.toDetailResponses(): List<FootstepDetailResponse> {
+            return map { from(it) }
         }
     }
 }

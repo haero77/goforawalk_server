@@ -71,7 +71,7 @@ class FootstepCreateServiceTest : BaseIntegrationTest() {
         assertAll(
             { assertThat(actual.userId).isEqualTo(user.id) },
             { assertThat(actual.userNickname).isEqualTo("산책왕") },
-            { assertThat(actual.footStepId).isPositive() },
+            { assertThat(actual.footstepId).isPositive() },
             { assertThat(actual.date).isEqualTo(LocalDate.of(2025, 5, 24)) },
             { assertThat(actual.imageUrl).isEqualTo("https://example.com/image.jpg") },
             { assertThat(actual.content).isEqualTo("test-content") },
@@ -100,7 +100,7 @@ class FootstepCreateServiceTest : BaseIntegrationTest() {
         assertAll(
             { assertThat(actual.userId).isEqualTo(user.id) },
             { assertThat(actual.userNickname).isEqualTo("산책왕") },
-            { assertThat(actual.footStepId).isPositive() },
+            { assertThat(actual.footstepId).isPositive() },
             { assertThat(actual.date).isEqualTo(LocalDate.of(2025, 5, 24)) },
             { assertThat(actual.imageUrl).isEqualTo("https://example.com/image.jpg") },
             { assertThat(actual.content).isEqualTo("test-content") },

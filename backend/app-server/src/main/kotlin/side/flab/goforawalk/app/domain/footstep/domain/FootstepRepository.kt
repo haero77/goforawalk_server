@@ -18,6 +18,16 @@ interface FootstepRepository : JpaRepository<Footstep, Long> {
         select fs 
         from Footstep fs 
             join fetch fs.user u
-        where fs.id = :footstepId""")
+        where fs.id = :footstepId"""
+    )
     fun findByIdFetchJoinUser(footstepId: Long): Footstep?
+
+    @Query(
+        """
+        select fs 
+        from Footstep fs
+            join fetch fs.user u
+        where fs.user.id = :userId"""
+    )
+    fun findAllByUserIdFetchJoinUser(userId: Long): List<Footstep>
 }
