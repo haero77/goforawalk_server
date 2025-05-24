@@ -1,6 +1,7 @@
 package side.flab.goforawalk.app.domain.footstep.domain
 
 import jakarta.persistence.*
+import org.hibernate.annotations.SQLRestriction
 import side.flab.goforawalk.app.domain.user.domain.User
 import side.flab.goforawalk.app.support.base.BaseEntity
 import side.flab.goforawalk.app.support.util.ClockHolder
@@ -16,6 +17,7 @@ import java.time.LocalDate
         )
     ]
 )
+@SQLRestriction(BaseEntity.SOFT_DELETE_RESTRICTION)
 class Footstep constructor(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, updatable = false)

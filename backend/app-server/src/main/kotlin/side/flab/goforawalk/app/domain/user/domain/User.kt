@@ -1,6 +1,7 @@
 package side.flab.goforawalk.app.domain.user.domain
 
 import jakarta.persistence.*
+import org.hibernate.annotations.SQLRestriction
 import side.flab.goforawalk.app.support.base.BaseEntity
 import side.flab.goforawalk.app.support.util.ClockHolder
 import side.flab.goforawalk.security.oauth2.OAuth2Provider
@@ -22,6 +23,7 @@ import java.util.*
         )
     ]
 )
+@SQLRestriction(BaseEntity.SOFT_DELETE_RESTRICTION)
 class User constructor(
     @Column(name = "email", length = 50)
     var email: String? = null,

@@ -24,7 +24,7 @@ abstract class BaseEntity {
     var updatedAt: Instant? = null
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "entity_status", nullable = false)
+    @Column(name = "entity_status", nullable = false, length = 10)
     private var entityStatus: EntityStatus = EntityStatus.ACTIVE
 
     fun active() {
@@ -45,5 +45,9 @@ abstract class BaseEntity {
 
     fun createdAtAsZonedDateTime(): ZonedDateTime {
         return SystemClockHolder.toSystemZonedDateTime(createdAt!!)
+    }
+
+    companion object {
+        const val SOFT_DELETE_RESTRICTION = "entity_status <> 'DELETED'"
     }
 }
