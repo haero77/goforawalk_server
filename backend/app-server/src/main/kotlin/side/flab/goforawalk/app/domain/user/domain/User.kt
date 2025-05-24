@@ -72,15 +72,11 @@ class User constructor(
         }
     }
 
-    fun updateNickname(nickname: String) {
-        this.nickname = nickname
-    }
-
     fun getLocalDate(clockHolder: ClockHolder): LocalDate {
         return clockHolder.localDate(getTimeZone())
     }
 
-    fun getTimeZone(): ZoneId {
+    private fun getTimeZone(): ZoneId {
         return ZoneId.of(timeZone)
     }
 

@@ -45,8 +45,4 @@ class Footstep constructor(
             )
         }
     }
-
-    fun updateContent(content: String) {
-        this.content = content
-    }
 }
