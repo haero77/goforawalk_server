@@ -1,22 +1,27 @@
 package side.flab.goforawalk.app.support.base
 
 import jakarta.persistence.*
-import org.hibernate.annotations.CreationTimestamp
-import org.hibernate.annotations.UpdateTimestamp
-import java.time.LocalDateTime
+import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
+import side.flab.goforawalk.app.support.util.SystemClockHolder
+import java.time.Instant
+import java.time.ZonedDateTime
 
 @MappedSuperclass
+@EntityListeners(AuditingEntityListener::class)
 abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
-        get() = requireNotNull(field) { "id must not be null" }
 
-    @CreationTimestamp
-    val createdAt: LocalDateTime = LocalDateTime.MIN
+    @CreatedDate
+    @Column(name = "created_at", nullable = false, updatable = false)
+    var createdAt: Instant? = null
 
-    @UpdateTimestamp
-    val updatedAt: LocalDateTime = LocalDateTime.MIN
+    @LastModifiedDate
+    @Column(name = "updated_at", nullable = false)
+    var updatedAt: Instant? = null
 
     @Enumerated(EnumType.STRING)
     @Column(name = "entity_status", nullable = false)
@@ -36,5 +41,9 @@ abstract class BaseEntity {
 
     fun isDeleted(): Boolean {
         return entityStatus == EntityStatus.DELETED
+    }
+
+    fun createdAtAsZonedDateTime(): ZonedDateTime {
+        return SystemClockHolder.toSystemZonedDateTime(createdAt!!)
     }
 }

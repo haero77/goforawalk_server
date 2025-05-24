@@ -4,9 +4,18 @@ import org.springframework.stereotype.Component
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.ZonedDateTime
 
 @Component
 class SystemClockHolder : ClockHolder {
+    companion object {
+        val SYSTEM_ZONE_ID: ZoneId = ZoneId.of("UTC")
+
+        fun toSystemZonedDateTime(instant: Instant): ZonedDateTime {
+            return instant.atZone(SYSTEM_ZONE_ID)
+        }
+    }
+
     override fun now(): Instant {
         return getInstant()
     }
