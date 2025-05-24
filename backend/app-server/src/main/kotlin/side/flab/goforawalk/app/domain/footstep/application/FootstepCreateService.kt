@@ -14,7 +14,7 @@ import side.flab.goforawalk.app.support.image.ImageUploader
 import side.flab.goforawalk.app.support.util.ClockHolder
 
 @Service
-class FootstepService(
+class FootstepCreateService(
     private val footstepCreator: FootstepCreator,
     private val footstepReader: FootstepReader,
     private val imageNameGenerator: FootstepImageNameGenerator,

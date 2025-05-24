@@ -23,7 +23,7 @@ import side.flab.goforawalk.app.support.util.ClockHolder
 import java.time.LocalDate
 import kotlin.test.Test
 
-class FootstepServiceTest : BaseIntegrationTest() {
+class FootstepCreateServiceTest : BaseIntegrationTest() {
     @Autowired
     lateinit var userReader: UserReader
 
@@ -90,8 +90,8 @@ class FootstepServiceTest : BaseIntegrationTest() {
     private fun footstepService(
         imageUploader: ImageUploader = FakeImageUploader("fake-image-url"),
         clockHolder: ClockHolder
-    ): FootstepService {
-        return FootstepService(
+    ): FootstepCreateService {
+        return FootstepCreateService(
             footstepCreator = footstepCreator,
             imageNameGenerator = imageNameGenerator,
             imageUploader = imageUploader,

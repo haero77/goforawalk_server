@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
-import side.flab.goforawalk.app.domain.footstep.application.FootstepService
+import side.flab.goforawalk.app.domain.footstep.application.FootstepCreateService
 import side.flab.goforawalk.app.domain.footstep.application.dto.FootStepCreateRequest
 import side.flab.goforawalk.app.domain.footstep.application.dto.FootstepDetailResponse
 import side.flab.goforawalk.app.support.base.BaseApiController
@@ -12,7 +12,7 @@ import side.flab.goforawalk.app.support.response.ApiResponse
 
 @RestController
 class FootstepController(
-    private val footstepService: FootstepService
+    private val footstepCreateService: FootstepCreateService
 ) : BaseApiController() {
 
     @PostMapping("/v1/footsteps")
@@ -26,7 +26,7 @@ class FootstepController(
             imageFile = data,
             content = content,
         )
-        val footstepDetailResponse = footstepService.createFootstep(request)
+        val footstepDetailResponse = footstepCreateService.createFootstep(request)
         return ApiResponse(footstepDetailResponse)
     }
 }
