@@ -1,0 +1,82 @@
+package side.flab.goforawalk.app.domain.footstep.application
+
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Assertions.assertAll
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.mock.web.MockMultipartFile
+import org.springframework.web.multipart.MultipartFile
+import side.flab.goforawalk.app.domain.footstep.application.dto.FootStepCreateRequest
+import side.flab.goforawalk.app.domain.footstep.domain.FootstepCreator
+import side.flab.goforawalk.app.domain.footstep.domain.FootstepImageNameGenerator
+import side.flab.goforawalk.app.domain.footstep.domain.FootstepReader
+import side.flab.goforawalk.app.domain.user.domain.UserReader
+import side.flab.goforawalk.app.support.BaseIntegrationTest
+import side.flab.goforawalk.app.support.fixture.UserFixture.createSeoulUser
+import side.flab.goforawalk.app.support.fixture.UserFixture.save
+import side.flab.goforawalk.app.support.image.ImageUploader
+import side.flab.goforawalk.app.support.mock.FakeClockHolder
+import side.flab.goforawalk.app.support.mock.FakeImageUploader
+import side.flab.goforawalk.app.support.util.ClockHolder
+import java.time.LocalDate
+import kotlin.test.Test
+
+class FootstepServiceTest : BaseIntegrationTest() {
+    @Autowired
+    lateinit var userReader: UserReader
+
+    @Autowired
+    lateinit var footstepCreator: FootstepCreator
+
+    @Autowired
+    lateinit var imageNameGenerator: FootstepImageNameGenerator
+
+    @Test
+    fun `유저와 이미지 파일로 발자취를 생성할 수 있다`() {
+        val user = createSeoulUser(nickname = "산책왕").save(userRepository)
+        val imageFile: MultipartFile = MockMultipartFile(
+            "image",
+            "image.jpg",
+            "image/jpeg",
+            "fake image content".toByteArray()
+        )
+
+        val request = FootStepCreateRequest(
+            userId = user.id!!,
+            imageFile = imageFile,
+            content = "test-content"
+        )
+
+        val imageUploader = FakeImageUploader(imageUrl = "https://example.com/image.jpg")
+        val clockHolder = FakeClockHolder(localDate = LocalDate.of(2025, 5, 24))
+        val SUT = footstepService(imageUploader, clockHolder)
+
+        // when
+        val actual = SUT.createFootstep(request)
+
+        // then
+        assertAll(
+            { assertThat(actual.userId).isEqualTo(user.id) },
+            { assertThat(actual.userNickname).isEqualTo("산책왕") },
+            { assertThat(actual.footStepId).isPositive() },
+            { assertThat(actual.date).isEqualTo(LocalDate.of(2025, 5, 24)) },
+            { assertThat(actual.imageUrl).isEqualTo("https://example.com/image.jpg") },
+            { assertThat(actual.content).isEqualTo("test-content") },
+            { assertThat(actual.createdAt).isNotNull() }
+        )
+    }
+
+    private fun footstepService(
+        imageUploader: ImageUploader,
+        clockHolder: ClockHolder
+    ): FootstepService {
+        return FootstepService(
+            footstepCreator = footstepCreator,
+            imageNameGenerator = imageNameGenerator,
+            imageUploader = imageUploader,
+            clockHolder = clockHolder,
+            footstepReader = FootstepReader(footstepRepository, clockHolder),
+            userReader = userReader,
+            footstepRepository = footstepRepository
+        )
+    }
+}

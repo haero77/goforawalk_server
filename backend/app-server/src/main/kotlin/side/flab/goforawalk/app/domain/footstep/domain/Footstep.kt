@@ -16,7 +16,7 @@ import java.time.LocalDate
         )
     ]
 )
-class Footstep private constructor(
+class Footstep constructor(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
     val user: User,
@@ -39,7 +39,7 @@ class Footstep private constructor(
         ): Footstep {
             return Footstep(
                 user = user,
-                date = clockHolder.localDate(user.getTimeZone()),
+                date = user.getLocalDate(clockHolder),
                 imageUrl = imageUrl,
                 content = content
             )

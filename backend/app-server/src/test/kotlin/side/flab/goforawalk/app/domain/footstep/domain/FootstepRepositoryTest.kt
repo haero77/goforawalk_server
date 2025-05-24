@@ -2,7 +2,8 @@ package side.flab.goforawalk.app.domain.footstep.domain
 
 import org.assertj.core.api.Assertions
 import side.flab.goforawalk.app.support.BaseIntegrationTest
-import side.flab.goforawalk.app.support.fixture.UserFixture
+import side.flab.goforawalk.app.support.fixture.UserFixture.createSeoulUser
+import side.flab.goforawalk.app.support.fixture.UserFixture.save
 import java.time.LocalDate
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -17,7 +18,7 @@ class FootstepRepositoryTest : BaseIntegrationTest() {
 
     @Test
     fun existsByUserIdAndDate_false() {
-        val user = UserFixture.createSavedUser(nickname = "산책왕", repo = userRepository)
+        val user = createSeoulUser(nickname = "산책왕").save(userRepository)
         val footstep = Footstep(
             user = user,
             date = LocalDate.of(2025, 5, 23),
@@ -37,7 +38,7 @@ class FootstepRepositoryTest : BaseIntegrationTest() {
 
     @Test
     fun existsByUserIdAndDate_true() {
-        val user = UserFixture.createSavedUser(nickname = "산책왕", repo = userRepository)
+        val user = createSeoulUser(nickname = "산책왕").save(userRepository)
         val footstep = Footstep(
             user = user,
             date = LocalDate.of(2025, 5, 24),

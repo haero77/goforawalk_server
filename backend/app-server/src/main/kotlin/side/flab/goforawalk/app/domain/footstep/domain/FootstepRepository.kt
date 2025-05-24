@@ -12,4 +12,12 @@ interface FootstepRepository : JpaRepository<Footstep, Long> {
         where fs.user.id = :userId and fs.date = :date"""
     )
     fun existsByUserIdAndDate(userId: Long, date: LocalDate): Boolean
+
+    @Query(
+        """
+        select fs 
+        from Footstep fs 
+            join fetch fs.user u
+        where fs.id = :footstepId""")
+    fun findByIdFetchJoinUser(footstepId: Long): Footstep?
 }

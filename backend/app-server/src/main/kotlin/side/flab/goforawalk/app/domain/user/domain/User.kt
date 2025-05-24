@@ -2,7 +2,9 @@ package side.flab.goforawalk.app.domain.user.domain
 
 import jakarta.persistence.*
 import side.flab.goforawalk.app.support.base.BaseEntity
+import side.flab.goforawalk.app.support.util.ClockHolder
 import side.flab.goforawalk.security.oauth2.OAuth2Provider
+import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
 
@@ -72,6 +74,10 @@ class User constructor(
 
     fun updateNickname(nickname: String) {
         this.nickname = nickname
+    }
+
+    fun getLocalDate(clockHolder: ClockHolder): LocalDate {
+        return clockHolder.localDate(getTimeZone())
     }
 
     fun getTimeZone(): ZoneId {
