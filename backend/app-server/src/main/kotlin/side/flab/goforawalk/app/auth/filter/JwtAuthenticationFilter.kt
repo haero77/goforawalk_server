@@ -1,5 +1,6 @@
 package side.flab.goforawalk.app.auth.filter
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -10,6 +11,8 @@ import org.springframework.security.web.util.matcher.RequestMatcher
 import org.springframework.web.filter.OncePerRequestFilter
 import side.flab.goforawalk.app.auth.AppAuthTokenProvider
 import side.flab.goforawalk.app.domain.user.application.UserId
+
+private val log = KotlinLogging.logger {}
 
 /**
  * "/api" path로 JWT 인증 필터를 적용하기 위한 필터
@@ -56,11 +59,12 @@ class JwtAuthenticationFilter(
     }
 
     private fun validateAccessToken(request: HttpServletRequest): UserId {
-        val accessToken = extractAccessToken(request) ?: throw JwtAuthenticationException.malformedToken()
+        val accessToken = extractAccessToken(request) ?: throw JwtAuthenticationException.emptyToken()
 
         try {
             return authTokenProvider.parseAccessToken(accessToken)
         } catch (e: Exception) {
+            log.warn(e) { "Failed to parse JWT token: ${e.message}" }
             throw JwtAuthenticationException.invalidToken(e.message ?: "Invalid JWT token")
         }
     }

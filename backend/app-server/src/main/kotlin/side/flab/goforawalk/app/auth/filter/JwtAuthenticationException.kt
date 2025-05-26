@@ -11,8 +11,8 @@ class JwtAuthenticationException(
             return JwtAuthenticationException("Token has expired", cause)
         }
 
-        fun malformedToken(cause: Throwable? = null): JwtAuthenticationException {
-            return JwtAuthenticationException("Malformed token", cause)
+        fun emptyToken(cause: Throwable? = null): JwtAuthenticationException {
+            return JwtAuthenticationException("No AccessToken exists", cause)
         }
 
         fun invalidToken(msg: String): JwtAuthenticationException {

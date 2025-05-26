@@ -34,7 +34,7 @@ class SecurityConfig {
                     .requestMatchers("/api/**").authenticated()
                     .anyRequest().authenticated()
             }
-            .addFilterBefore(oidcLoginAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(oidcLoginAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java) // todo 필터 위치 조정(usernamePasswordAuthenticationFilter 는 미사용.)
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
             .authenticationProvider(oidcAuthenticationProvider)
 

@@ -36,7 +36,7 @@ class OidcLoginAuthenticationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain,
     ) {
-        if (!requestMatcher.matches(request)) {
+        if (!requestMatcher.matches(request)) { // todo shouldNotFilter로 리팩토링
             filterChain.doFilter(request, response)
             return
         }
