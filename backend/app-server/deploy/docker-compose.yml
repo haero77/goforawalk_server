@@ -4,17 +4,9 @@ services:
       context: .
       dockerfile: Dockerfile
     image: app-server:latest
-    container_name: app-server-container
+    container_name: app-server
     restart: always
     ports:
-      - "8080:8080" # 호스트 포트:컨테이너 포트
-    environment:
-      - SPRING_PROFILES_ACTIVE=${ENVIRONMENT}
-      - DB_USER=${DB_USER}
-      - DB_PW=${DB_PW}
-      - DB_URL=${DB_URL}
-      - KAKAO_CLIENT_ID=${KAKAO_CLIENT_ID}
-      - JWT_AT_SECRET_KEY=${JWT_AT_SECRET_KEY}
-      - JWT_RT_SECRET_KEY=${JWT_RT_SECRET_KEY}
-      - JWT_AT_EXPIRATION_SECONDS=${JWT_AT_EXPIRATION_SECONDS}
-      - JWT_RT_EXPIRATION_SECONDS=${JWT_RT_EXPIRATION_SECONDS}
+      - "8080:8080"
+    env_file:
+      - .env # .env 파일의 모든 환경변수를 컨테이너에 주입

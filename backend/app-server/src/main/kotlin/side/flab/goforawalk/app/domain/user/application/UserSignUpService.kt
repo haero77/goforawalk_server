@@ -24,7 +24,7 @@ class UserSignUpService(
     }
 
     private fun createUser(userInfo: OidcUserInfo): User {
-        val user = User(
+        val user = User.of(
             provider = userInfo.provider,
             providerUsername = userInfo.providerUsername,
         )

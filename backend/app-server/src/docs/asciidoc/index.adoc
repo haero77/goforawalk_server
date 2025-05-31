@@ -5,6 +5,7 @@
 :toc: left
 :toclevels: 2
 :sectlinks:
+:table-caption!:
 
 == 개요
 
@@ -16,18 +17,22 @@
 |`https://api.goforawalk.site`
 |===
 
+[cols="1,1"]
+|===
+2+|HTTP Header
+
+|Authorization |Bearer \{AccessToken}
+|===
+
+
 == 인증
 
 === 로그인
 
-==== 엔드포인트
-
-include::{snippets}/login-oidc-success/path-parameters.adoc[]
-
 ==== 요청
 
 include::{snippets}/login-oidc-success/http-request.adoc[]
-
+include::{snippets}/login-oidc-success/path-parameters.adoc[]
 include::{snippets}/login-oidc-success/request-fields.adoc[]
 
 ==== 로그인 성공 응답
@@ -35,29 +40,45 @@ include::{snippets}/login-oidc-success/http-response.adoc[]
 
 include::{snippets}/login-oidc-success/response-fields.adoc[]
 
-
 ==== 로그인 실패 응답
 include::{snippets}/login-oidc-failure/http-response.adoc[]
 include::{snippets}/login-oidc-failure/response-fields.adoc[]
 
 
-== Sample
+== 발자취
 
-=== GET Hello(배포 중)
+=== 발자취 리스트 조회
 
 ==== 요청
-include::{snippets}/get-hello/http-request.adoc[]
+include::{snippets}/footstep-list-success/http-request.adoc[]
 
-==== 응답
-include::{snippets}/get-hello/http-response.adoc[]
+==== 성공 응답
 
-=== POST Hello(배포 중)
+include::{snippets}/footstep-list-success/http-response.adoc[]
+include::{snippets}/footstep-list-success/response-fields.adoc[]
+
+=== 발자취 생성
+
 ==== 요청
-include::{snippets}/post-hello/http-request.adoc[]
+include::{snippets}/footstep-create-success/http-request.adoc[]
+include::{snippets}/footstep-create-success/request-parts.adoc[]
 
-include::{snippets}/post-hello/request-fields.adoc[]
+==== 성공 응답
 
-==== 응답
-include::{snippets}/post-hello/http-response.adoc[]
+include::{snippets}/footstep-create-success/http-response.adoc[]
+include::{snippets}/footstep-create-success/response-fields.adoc[]
 
-include::{snippets}/post-hello/response-fields.adoc[]
+==== 실패 응답(인증 실패)
+
+include::{snippets}/footstep-create-unauthorized/http-response.adoc[]
+
+=== 발자취 삭제
+
+==== 요청
+
+include::{snippets}/footstep-delete-success/http-request.adoc[]
+include::{snippets}/footstep-delete-success/path-parameters.adoc[]
+
+==== 성공 응답
+
+include::{snippets}/footstep-delete-success/http-response.adoc[]

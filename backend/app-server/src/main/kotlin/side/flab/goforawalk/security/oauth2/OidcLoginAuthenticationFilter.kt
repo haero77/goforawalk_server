@@ -26,7 +26,7 @@ class OidcLoginAuthenticationFilter(
 ) : OncePerRequestFilter() {
 
     companion object {
-        const val OIDC_LOGIN_PATH_PATTERN = "/api/v1/auth/login/oauth2/**"
+        const val OIDC_LOGIN_PATH_PATTERN = "/api/v1/auth/login/oauth2/**" // todo: 앱에서 path 주입 (현재는 시큐리티에서 직접 정의)
     }
 
     private val requestMatcher: RequestMatcher = AntPathRequestMatcher(OIDC_LOGIN_PATH_PATTERN, HttpMethod.POST.name())
@@ -36,7 +36,7 @@ class OidcLoginAuthenticationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain,
     ) {
-        if (!requestMatcher.matches(request)) {
+        if (!requestMatcher.matches(request)) { // todo shouldNotFilter로 리팩토링
             filterChain.doFilter(request, response)
             return
         }

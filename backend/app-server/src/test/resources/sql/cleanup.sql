@@ -1,0 +1,2 @@
+DELETE FROM footstep WHERE 1=1;
+DELETE FROM users WHERE 1=1;
