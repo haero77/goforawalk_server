@@ -144,3 +144,4 @@ Authorization: Bearer {accessToken}
 
 - [ ] 올바르게 요청하면 200 OK 상태 코드를 반환한다.
 - [ ] 인증 토큰이 유효하지 않을 경우 401 Unauthorized 상태 코드를 반환한다.
+- [ ] 다른 유저의 발자취를 삭제하려고 하면 403 Forbidden 상태 코드를 반환한다.

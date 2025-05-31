@@ -18,7 +18,6 @@ create table footstep
     entity_status enum ('ACTIVE','DELETED') not null,
     created_at    timestamp(6) default current_timestamp(6) not null,
     updated_at    timestamp(6) default current_timestamp(6) not null,
-    primary key (id),
-    constraint uk_user_id_date unique (user_id, date)
+    primary key (id)
 );
 
