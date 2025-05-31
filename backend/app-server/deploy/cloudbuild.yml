@@ -19,6 +19,21 @@ steps:
         git log && \
         echo "현재 디렉토리: $(pwd)"
 
+  # 1단계: Secret Manager에서 .env 내용을 가져와 /workspace/.env 파일로 저장
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: 'fetch-env-secret'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        set -e
+        echo ">>>>> Secret Manager에서 .env 내용 가져오기 시작 (${PROJECT_ID}, env-prod)..."
+        gcloud secrets versions access latest --secret="env-prod" --project="${_PROJECT_ID}" > /workspace/.env
+        echo ">>>>> /workspace/.env 파일 생성 완료."
+        echo "생성된 /workspace/.env 파일 내용 확인 (일부만 표시):"
+        head -n 3 /workspace/.env
+  
+
   # 1. JAR 파일 빌드
   - name: 'eclipse-temurin:17-jdk'
     id: 'build-jar'
@@ -84,6 +99,7 @@ steps:
           ${_SOURCE_DIR}/deploy/Dockerfile \
           ${_SOURCE_DIR}/deploy/docker-compose.yml \
           ${_SOURCE_DIR}/deploy/docker-run.sh \
+          /workspace/.env \
           ${_SSH_USER}@${_INSTANCE_NAME}:${_REMOTE_DEPLOY_DIR} && \
         
         echo ">>>>> SCP로 파일 전송 완료..."
@@ -107,16 +123,6 @@ steps:
           cd ${_REMOTE_DEPLOY_DIR} &&  
           echo ">>>>> 현재 디렉토리: $(pwd)" &&  
         
-          echo ">>>>> .env 파일 생성 중..." && \
-          echo "ENVIRONMENT=${_ENVIRONMENT}" >> .env && \
-          echo "DB_USER=${_DB_USER}" >> .env && \
-          echo "DB_PW=${_DB_PW}" >> .env && \
-          echo "DB_URL=${_DB_URL}" >> .env && \
-          echo "KAKAO_CLIENT_ID=${_KAKAO_CLIENT_ID}" >> .env && \
-          echo "JWT_AT_SECRET_KEY=${_JWT_AT_SECRET_KEY}" >> .env && \
-          echo "JWT_RT_SECRET_KEY=${_JWT_RT_SECRET_KEY}" >> .env && \
-          echo "JWT_AT_EXPIRATION_SECONDS=${_JWT_AT_EXPIRATION_SECONDS}" >> .env && \
-          echo "JWT_RT_EXPIRATION_SECONDS=${_JWT_RT_EXPIRATION_SECONDS}" >> .env && \
           chmod 600 .env && \
           echo ".env 파일 내용:" && \
           cat .env && \
