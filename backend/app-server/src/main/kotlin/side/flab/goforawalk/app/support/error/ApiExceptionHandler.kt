@@ -14,8 +14,22 @@ class ApiExceptionHandler {
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(RuntimeException::class)
-    fun handleIllegalArgumentException(e: RuntimeException): ErrorResponse {
+    fun handleRuntimeException(e: RuntimeException): ErrorResponse {
         log.error("Error occurred: ${e.message}", e)
         return ErrorResponse.internalServerError(e.message ?: "Internal server error")
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException::class)
+    fun handleIllegalArgumentException(e: IllegalArgumentException): ErrorResponse {
+        log.error("IllegalArgumentException occurred: ${e.message}", e)
+        return ErrorResponse.badRequest(e.message)
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(IllegalStateException::class)
+    fun handleIllegalStateException(e: IllegalStateException): ErrorResponse {
+        log.error("IllegalStateException occurred: ${e.message}", e)
+        return ErrorResponse.conflict(e.message)
     }
 }
