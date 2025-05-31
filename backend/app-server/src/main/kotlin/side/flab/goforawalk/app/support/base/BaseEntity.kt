@@ -6,7 +6,7 @@ import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import side.flab.goforawalk.app.support.util.SystemClockHolder
 import java.time.Instant
-import java.time.ZonedDateTime
+import java.time.OffsetDateTime
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
@@ -43,8 +43,8 @@ abstract class BaseEntity {
         return entityStatus == EntityStatus.DELETED
     }
 
-    fun createdAtAsZonedDateTime(): ZonedDateTime {
-        return SystemClockHolder.toSystemZonedDateTime(createdAt!!)
+    fun createdAtAsSeoulOffset(): OffsetDateTime {
+        return SystemClockHolder.toSeoulZonedDateTime(createdAt!!).toOffsetDateTime()
     }
 
     companion object {

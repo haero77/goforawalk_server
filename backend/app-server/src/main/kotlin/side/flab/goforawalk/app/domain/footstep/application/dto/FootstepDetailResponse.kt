@@ -2,7 +2,7 @@ package side.flab.goforawalk.app.domain.footstep.application.dto
 
 import side.flab.goforawalk.app.domain.footstep.domain.Footstep
 import java.time.LocalDate
-import java.time.ZonedDateTime
+import java.time.OffsetDateTime
 
 data class FootstepDetailResponse(
     val userId: Long,
@@ -11,7 +11,7 @@ data class FootstepDetailResponse(
     val date: LocalDate,
     val imageUrl: String,
     val content: String? = null,
-    val createdAt: ZonedDateTime // "2025-05-10T22:00+09:00"
+    val createdAt: OffsetDateTime // "2025-05-10T22:00+09:00"
 ) {
     companion object {
         fun from(
@@ -26,7 +26,7 @@ data class FootstepDetailResponse(
                 date = footstep.date,
                 imageUrl = footstep.imageUrl,
                 content = footstep.content,
-                createdAt = footstep.createdAtAsZonedDateTime()
+                createdAt = footstep.createdAtAsSeoulOffset()
             )
         }
 

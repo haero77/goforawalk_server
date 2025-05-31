@@ -9,10 +9,10 @@ import java.time.ZonedDateTime
 @Component
 class SystemClockHolder : ClockHolder {
     companion object {
-        val SYSTEM_ZONE_ID: ZoneId = ZoneId.of("UTC")
+        val SEOUL_ZONE_ID: ZoneId = ZoneId.of("Asia/Seoul")
 
-        fun toSystemZonedDateTime(instant: Instant): ZonedDateTime {
-            return instant.atZone(SYSTEM_ZONE_ID)
+        fun toSeoulZonedDateTime(instant: Instant): ZonedDateTime {
+            return instant.atZone(SEOUL_ZONE_ID)
         }
     }
 
