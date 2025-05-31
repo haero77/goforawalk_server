@@ -10,6 +10,7 @@ import side.flab.goforawalk.app.domain.footstep.application.dto.FootStepCreateRe
 import side.flab.goforawalk.app.domain.footstep.application.dto.FootstepDetailResponse
 import side.flab.goforawalk.app.support.base.BaseApiController
 import side.flab.goforawalk.app.support.response.ApiResponse
+import side.flab.goforawalk.app.support.web.CurrentUserId
 
 @RestController
 class FootstepController(
@@ -20,7 +21,7 @@ class FootstepController(
 
     @GetMapping("/v1/footsteps")
     fun getFootsteps(
-        userId: Long, // todo MethodArgumentResolver를 통해 자동으로 주입
+        @CurrentUserId userId: Long,
     ): ApiResponse<FootstepQueryResponse> {
         val footsteps = footstepQueryService.findAllFootStepsOfUser(userId)
         return ApiResponse(FootstepQueryResponse(footsteps))
@@ -28,7 +29,7 @@ class FootstepController(
 
     @PostMapping("/v1/footsteps")
     fun createFootstep(
-        userId: Long, // todo MethodArgumentResolver를 통해 자동으로 주입
+        @CurrentUserId userId: Long,
         @RequestPart("data") data: MultipartFile, // image file
         @RequestPart("content") content: String?,
     ): ApiResponse<FootstepDetailResponse> {
