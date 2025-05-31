@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Profile
 import org.springframework.test.context.jdbc.Sql
+import side.flab.goforawalk.app.auth.AppAuthTokenProvider
 import side.flab.goforawalk.app.domain.footstep.domain.FootstepRepository
+import side.flab.goforawalk.app.domain.user.domain.User
 import side.flab.goforawalk.app.domain.user.domain.UserRepository
+import side.flab.goforawalk.app.support.fixture.LoginFixture.generateAT
 
 @Profile("test")
 @SpringBootTest
@@ -20,4 +23,14 @@ abstract class BaseIntegrationTest {
 
     @Autowired
     lateinit var footstepRepository: FootstepRepository
+
+    @Autowired
+    lateinit var authTokenProvider: AppAuthTokenProvider
+
+    fun generateAccessToken(user: User): String {
+        return generateAT(
+            provider = authTokenProvider,
+            user = user
+        )
+    }
 }
