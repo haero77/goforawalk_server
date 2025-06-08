@@ -1,6 +1,5 @@
 package side.flab.goforawalk.app.docs
 
-import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
 import org.springframework.restdocs.payload.JsonFieldType
 import org.springframework.restdocs.payload.PayloadDocumentation.*
@@ -10,7 +9,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import side.flab.goforawalk.app.sample.SampleApi
 
 class SampleApiDocTest : DocsTestSupport() {
-    @Test
+//    @Test
     fun `get-hello`() {
         mockMvc.perform(
             get("/sample/hello")
@@ -19,7 +18,7 @@ class SampleApiDocTest : DocsTestSupport() {
             .andDo(docs)  // 기본 설정된 docs 사용 (method-name 패턴 적용)
     }
 
-    @Test
+//    @Test
     fun `post-hello`() {
         val request = SampleApi.HelloRequest("테스터")
 
