@@ -55,4 +55,29 @@ class GET_specs : BaseE2ETest() {
                 "data.footstepStreakDays", equalTo(2),
             )
     }
+
+    @Test
+    fun `닉네임이 8글자를 초과할 경우 8글자까지만 조회된다`() {
+        // Arrange
+        val user = createSeoulUser(nickname = "123456789", provider = APPLE).save(userRepository)
+        createFootstep(user, dateOf("2025-02-27")).save(footstepRepository)
+        createFootstep(user, dateOf("2025-02-28")).save(footstepRepository)
+        createFootstep(user, dateOf("2025-03-02")).save(footstepRepository)
+
+        // Act
+        val response = given()
+            .header("Authorization", "Bearer ${generateAccessToken(user)}")
+            .get("/api/v1/profile")
+
+        // Assert
+        response.then()
+            .statusCode(200)
+            .body(
+                "data.userId", equalTo(user.id!!.toInt()),
+                "data.userNickname", equalTo("12345678"),
+                "data.userProvider", equalTo(APPLE.name),
+                "data.totalFootstepCount", equalTo(3),
+                "data.footstepStreakDays", equalTo(2),
+            )
+    }
 }
