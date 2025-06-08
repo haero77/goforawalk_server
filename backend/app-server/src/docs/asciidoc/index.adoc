@@ -1,4 +1,4 @@
-= Sample API 문서
+= 👟걷는 API 문서
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
@@ -25,6 +25,9 @@
 |===
 
 
+////
+인증
+////
 == 인증
 
 === 로그인
@@ -45,6 +48,24 @@ include::{snippets}/login-oidc-failure/http-response.adoc[]
 include::{snippets}/login-oidc-failure/response-fields.adoc[]
 
 
+
+////
+프로필
+////
+== 프로필
+
+=== 유저 프로필 조회
+
+==== 요청
+include::{snippets}/profile-success/http-request.adoc[]
+
+==== 성공 응답
+include::{snippets}/profile-success/http-response.adoc[]
+include::{snippets}/profile-success/response-fields.adoc[]
+
+////
+발자취
+////
 == 발자취
 
 === 발자취 리스트 조회
