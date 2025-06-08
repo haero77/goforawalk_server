@@ -22,7 +22,12 @@ class ProfileApiDocsTest : DocsTestSupport() {
     @Test
     fun `profile-success`() {
         // Arrange
-        val user = createSeoulUser(nickname = "산책왕", provider = APPLE).save(userRepository)
+        val user = createSeoulUser(
+            nickname = "산책왕",
+            provider = APPLE,
+            email = "test@test.com"
+        ).save(userRepository)
+
         createFootstep(user, dateOf("2025-02-27")).save(footstepRepository)
         createFootstep(user, dateOf("2025-02-28")).save(footstepRepository)
         createFootstep(user, dateOf("2025-03-02")).save(footstepRepository)
@@ -42,6 +47,7 @@ class ProfileApiDocsTest : DocsTestSupport() {
                     responseFields(
                         fieldWithPath("data.userId").description("유저 ID").type(NUMBER),
                         fieldWithPath("data.userNickname").description("유저 닉네임").type(STRING),
+                        fieldWithPath("data.userEmail").description("유저 이메일(nullable)").optional().type(STRING),
                         fieldWithPath("data.userProvider").description("유저 가입 경로 (KAKAO/APPLE)").type(STRING),
                         fieldWithPath("data.totalFootstepCount").description("전체 발자취 개수").type(NUMBER),
                         fieldWithPath("data.footstepStreakDays").description("연속 발자취 일수").type(NUMBER),

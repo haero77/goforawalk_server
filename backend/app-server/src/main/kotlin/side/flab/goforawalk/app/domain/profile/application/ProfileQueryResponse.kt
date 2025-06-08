@@ -9,6 +9,7 @@ data class ProfileQueryResponse(
 
     @JsonSerialize(using = UserShortNicknameSerializer::class)
     val userNickname: String,
+    val userEmail: String?,
 
     val userProvider: OAuth2Provider,
     val totalFootstepCount: Long,
