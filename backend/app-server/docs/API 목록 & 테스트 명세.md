@@ -48,6 +48,7 @@ Authorization: Bearer {accessToken}
   "data": {
     "userId": 123,
     "userNickname": "산책왕",
+    "userEmail": "test@test.com",
     "userProvider": "KAKAO",
     "totalFootstepCount": 3,
     "footstepStreakDays": 2
@@ -57,8 +58,8 @@ Authorization: Bearer {accessToken}
   
 ### 정책
 
-- 프로필 조회 API를 통해, 닉네임, 발자취 개수, 가입 경로(카카오,애플), 연속 발자취 일수를 확인 가능하다.
-  - userId, userNickname, userProvider, totalFootstepCount, footstepStreakDays
+- 프로필 조회 API를 통해, 닉네임, 이메일, 가입 경로(카카오,애플), 발자취 개수,  연속 발자취 일수를 확인 가능하다.
+  - userId, userNickname, userEmail, userProvider, totalFootstepCount, footstepStreakDays
 - 닉네임은 8글자까지 조회되어야한다.
 
 ### 테스트 

@@ -17,6 +17,7 @@ class ProfileQueryService(
         return ProfileQueryResponse(
             userId = user.id!!,
             userNickname = user.nickname,
+            userEmail = user.email,
             userProvider = user.provider,
             totalFootstepCount = footstepDomainService.countTotalFoostepsOfUser(userId),
             footstepStreakDays = footstepDomainService.countFootstepStreakDays(userId)
