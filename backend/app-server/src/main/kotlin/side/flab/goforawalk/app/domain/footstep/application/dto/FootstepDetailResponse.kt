@@ -1,11 +1,15 @@
 package side.flab.goforawalk.app.domain.footstep.application.dto
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import side.flab.goforawalk.app.domain.footstep.domain.Footstep
+import side.flab.goforawalk.app.support.serializer.UserShortNicknameSerializer
 import java.time.LocalDate
 import java.time.OffsetDateTime
 
 data class FootstepDetailResponse(
     val userId: Long,
+
+    @JsonSerialize(using = UserShortNicknameSerializer::class)
     val userNickname: String,
     val footstepId: Long,
     val date: LocalDate,

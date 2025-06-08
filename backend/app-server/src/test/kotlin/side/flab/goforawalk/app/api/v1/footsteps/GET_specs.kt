@@ -65,4 +65,31 @@ class GET_specs : BaseE2ETest() {
                 "data.footsteps[1].createdAt", notNullValue(),
             )
     }
+
+    @Test
+    fun `닉네임이 8글자를 초과할 경우 8글자까지만 조회된다`() {
+        // Arrange
+        val user = createSeoulUser(nickname = "123456789").save(userRepository)
+        createFootstep(user, dateOf("2025-05-25")).save(footstepRepository)
+
+        // Act
+        val response = given()
+            .header("Authorization", "Bearer ${generateAccessToken(user)}")
+            .`when`()
+            .get("/api/v1/footsteps")
+
+        // Assert
+        response.then()
+            .statusCode(200)
+            .body(
+                "data.footsteps.size()", equalTo(1),
+                "data.footsteps[0].userId", notNullValue(),
+                "data.footsteps[0].userNickname", equalTo("12345678"),
+                "data.footsteps[0].footstepId", notNullValue(),
+                "data.footsteps[0].date", equalTo("2025-05-25"),
+                "data.footsteps[0].imageUrl", equalTo("https://example.com/image.jpg"),
+                "data.footsteps[0].content", equalTo("오늘의 산책은 정말 좋았어요!"),
+                "data.footsteps[0].createdAt", notNullValue(),
+            )
+    }
 }
