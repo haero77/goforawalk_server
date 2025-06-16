@@ -28,7 +28,7 @@
 ////
 인증
 ////
-== 인증
+== 인증/회원
 
 === 로그인
 
@@ -47,6 +47,13 @@ include::{snippets}/login-oidc-success/response-fields.adoc[]
 include::{snippets}/login-oidc-failure/http-response.adoc[]
 include::{snippets}/login-oidc-failure/response-fields.adoc[]
 
+=== 회원탈퇴
+
+==== 요청
+include::{snippets}/user-delete-success/http-request.adoc[]
+
+==== 성공 응답
+include::{snippets}/user-delete-success/http-response.adoc[]
 
 
 ////
