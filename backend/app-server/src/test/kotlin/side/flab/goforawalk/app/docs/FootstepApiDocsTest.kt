@@ -98,7 +98,7 @@ class FootstepApiDocsTest : DocsTestSupport() {
                         fieldWithPath("data.footstepId").description("생성된 발자취 ID").type(NUMBER),
                         fieldWithPath("data.date").description("산책 날짜 (YYYY-MM-DD 형식)").type(STRING),
                         fieldWithPath("data.imageUrl").description("업로드된 이미지 URL").type(STRING),
-                        fieldWithPath("data.content").description("오늘의 한 마디").type(STRING),
+                        fieldWithPath("data.content").description("오늘의 한 마디").type(STRING).optional(),
                         fieldWithPath("data.createdAt").description("생성 일시 (ISO-8601 형식)").type(STRING)
                     )
                 )
