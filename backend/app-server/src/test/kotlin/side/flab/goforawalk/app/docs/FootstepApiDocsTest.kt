@@ -40,13 +40,13 @@ class FootstepApiDocsTest : DocsTestSupport() {
                         headerWithName("Authorization").description("AccessToken")
                     ),
                     responseFields(
-                        fieldWithPath("data.footsteps").description("발자취 목록").type(ARRAY),
+                        fieldWithPath("data.footsteps").description("발자취 리스트").type(ARRAY),
                         fieldWithPath("data.footsteps[].userId").description("유저 ID").type(NUMBER),
                         fieldWithPath("data.footsteps[].userNickname").description("유저 닉네임").type(STRING),
                         fieldWithPath("data.footsteps[].footstepId").description("발자취 ID").type(NUMBER),
                         fieldWithPath("data.footsteps[].date").description("발자취 날짜").type(STRING),
                         fieldWithPath("data.footsteps[].imageUrl").description("이미지 URL").type(STRING),
-                        fieldWithPath("data.footsteps[].content").description("오늘의 한 마디").type(STRING),
+                        fieldWithPath("data.footsteps[].content").description("오늘의 한 마디").type(STRING).optional(),
                         fieldWithPath("data.footsteps[].createdAt").description("생성 일시").type(STRING)
                     )
                 )
@@ -126,7 +126,7 @@ class FootstepApiDocsTest : DocsTestSupport() {
             )
     }
 
-//    @Test
+    //    @Test
     fun `footstep-list-unauthorized`() {
         // Act & Assert
         mockMvc.perform(
