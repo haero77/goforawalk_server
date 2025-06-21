@@ -39,7 +39,7 @@ class LoginApiDocsTest : DocsTestSupport(){
                         fieldWithPath("data.userId").description("userId").type(NUMBER),
                         fieldWithPath("data.credentials.accessToken").description("Access Token").type(STRING),
                         fieldWithPath("data.credentials.refreshToken").description("Refresh Token").type(STRING),
-                        fieldWithPath("data.userInfo.email").description("email(nullable)").type(STRING).optional(),
+                        fieldWithPath("data.userInfo.email").description("email").type(STRING).optional(),
                         fieldWithPath("data.userInfo.nickname").description("nickname").type(STRING)
                     )
                 )
