@@ -51,7 +51,7 @@ class GET_specs : BaseE2ETest() {
                 "data.footsteps[0].userId", notNullValue(),
                 "data.footsteps[0].userNickname", equalTo("산책왕"),
                 "data.footsteps[0].footstepId", notNullValue(),
-                "data.footsteps[0].date", equalTo("2025-05-25"),
+                "data.footsteps[0].date", equalTo("2025-05-27"),
                 "data.footsteps[0].imageUrl", equalTo("https://example.com/image.jpg"),
                 "data.footsteps[0].content", equalTo("오늘의 산책은 정말 좋았어요!"),
                 "data.footsteps[0].createdAt", notNullValue(),
@@ -59,10 +59,64 @@ class GET_specs : BaseE2ETest() {
                 "data.footsteps[1].userId", notNullValue(),
                 "data.footsteps[1].userNickname", equalTo("산책왕"),
                 "data.footsteps[1].footstepId", notNullValue(),
-                "data.footsteps[1].date", equalTo("2025-05-27"),
+                "data.footsteps[1].date", equalTo("2025-05-25"),
                 "data.footsteps[1].imageUrl", equalTo("https://example.com/image.jpg"),
                 "data.footsteps[1].content", equalTo("오늘의 산책은 정말 좋았어요!"),
                 "data.footsteps[1].createdAt", notNullValue(),
+            )
+    }
+
+    @Test
+    fun `발자취 리스트는 날짜 내림차순으로 정렬된다`() {
+        // Arrange
+        val user = createSeoulUser("산책왕").save(userRepository)
+        createFootstep(user, dateOf("2025-05-25")).save(footstepRepository)
+        createFootstep(user, dateOf("2025-05-29")).save(footstepRepository)
+        createFootstep(user, dateOf("2025-05-27")).save(footstepRepository)
+        createFootstep(user, dateOf("2025-06-01")).save(footstepRepository)
+
+        // Act
+        val response = given()
+            .header("Authorization", "Bearer ${generateAccessToken(user)}")
+            .`when`()
+            .get("/api/v1/footsteps")
+
+        // Assert
+        response.then()
+            .statusCode(200)
+            .body(
+                "data.footsteps.size()", equalTo(4),
+                "data.footsteps[0].userId", notNullValue(),
+                "data.footsteps[0].userNickname", equalTo("산책왕"),
+                "data.footsteps[0].footstepId", notNullValue(),
+                "data.footsteps[0].date", equalTo("2025-06-01"),
+                "data.footsteps[0].imageUrl", equalTo("https://example.com/image.jpg"),
+                "data.footsteps[0].content", equalTo("오늘의 산책은 정말 좋았어요!"),
+                "data.footsteps[0].createdAt", notNullValue(),
+
+                "data.footsteps[1].userId", notNullValue(),
+                "data.footsteps[1].userNickname", equalTo("산책왕"),
+                "data.footsteps[1].footstepId", notNullValue(),
+                "data.footsteps[1].date", equalTo("2025-05-29"),
+                "data.footsteps[1].imageUrl", equalTo("https://example.com/image.jpg"),
+                "data.footsteps[1].content", equalTo("오늘의 산책은 정말 좋았어요!"),
+                "data.footsteps[1].createdAt", notNullValue(),
+
+                "data.footsteps[2].userId", notNullValue(),
+                "data.footsteps[2].userNickname", equalTo("산책왕"),
+                "data.footsteps[2].footstepId", notNullValue(),
+                "data.footsteps[2].date", equalTo("2025-05-27"),
+                "data.footsteps[2].imageUrl", equalTo("https://example.com/image.jpg"),
+                "data.footsteps[2].content", equalTo("오늘의 산책은 정말 좋았어요!"),
+                "data.footsteps[2].createdAt", notNullValue(),
+
+                "data.footsteps[3].userId", notNullValue(),
+                "data.footsteps[3].userNickname", equalTo("산책왕"),
+                "data.footsteps[3].footstepId", notNullValue(),
+                "data.footsteps[3].date", equalTo("2025-05-25"),
+                "data.footsteps[3].imageUrl", equalTo("https://example.com/image.jpg"),
+                "data.footsteps[3].content", equalTo("오늘의 산책은 정말 좋았어요!"),
+                "data.footsteps[3].createdAt", notNullValue(),
             )
     }
 
