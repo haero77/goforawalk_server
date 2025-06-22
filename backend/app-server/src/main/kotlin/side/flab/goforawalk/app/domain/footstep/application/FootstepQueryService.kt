@@ -11,6 +11,10 @@ class FootstepQueryService(
 ) {
     fun findAllFootStepsOfUser(userId: Long): List<FootstepDetailResponse> {
         val footsteps = footstepRepository.findAllByUserIdFetchJoinUser(userId)
-        return footsteps.toDetailResponses()
+
+        // sort by date desc
+        val sortedFootsteps = footsteps.sortedByDescending { it.date }
+
+        return sortedFootsteps.toDetailResponses()
     }
 }
