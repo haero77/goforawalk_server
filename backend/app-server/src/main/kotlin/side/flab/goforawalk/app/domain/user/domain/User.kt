@@ -32,8 +32,8 @@ class User constructor(
     @Enumerated(EnumType.STRING)
     val provider: OAuth2Provider,
 
-    @Column(name = "provider_username", nullable = false, updatable = false, length = 30)
-    val providerUsername: String,
+    @Column(name = "provider_username", nullable = false, length = 30)
+    var providerUsername: String,
 
     nickname: String,
 
@@ -76,6 +76,11 @@ class User constructor(
 
     fun getLocalDate(clockHolder: ClockHolder): LocalDate {
         return clockHolder.localDate(getTimeZone())
+    }
+
+    override fun delete() {
+        super.delete()
+        this.providerUsername = "deleted_user_${id}"
     }
 
     private fun getTimeZone(): ZoneId {
