@@ -1,19 +1,23 @@
 package side.flab.goforawalk.app.api.v1.footsteps
 
-import io.restassured.RestAssured.given
+import io.restassured.module.mockmvc.RestAssuredMockMvc.given
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.notNullValue
 import org.junit.jupiter.api.Assertions.assertAll
 import org.junit.jupiter.api.DisplayName
-import side.flab.goforawalk.app.support.BaseE2ETest
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpHeaders.AUTHORIZATION
+import org.springframework.http.MediaType
+import org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE
+import side.flab.goforawalk.app.support.BaseRestAssuredTest
 import side.flab.goforawalk.app.support.fixture.UserFixture.createSeoulUser
 import side.flab.goforawalk.app.support.fixture.UserFixture.save
 import java.time.LocalDate
 import kotlin.test.Test
 
 @DisplayName("POST /api/v1/footsteps")
-class POST_specs : BaseE2ETest() {
+class POST_specs : BaseRestAssuredTest() {
 
     @Test
     fun `인증 토큰이 유효하지 않을 경우 401 Unauthorized 상태 코드를 반환한다`() {
@@ -40,7 +44,8 @@ class POST_specs : BaseE2ETest() {
 
         // Act
         val response = given()
-            .header("Authorization", "Bearer ${generateAccessToken(user)}")
+            .header(AUTHORIZATION, "Bearer ${generateAccessToken(user)}")
+            .contentType(MULTIPART_FORM_DATA_VALUE)
             .multiPart("data", "test-image.jpg", imageFile, "image/jpeg")
             .multiPart("content", content, "text/plain")
             .`when`()

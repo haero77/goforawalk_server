@@ -1,10 +1,10 @@
 package side.flab.goforawalk.app.api.v1.profile
 
-import io.restassured.RestAssured.given
+import io.restassured.module.mockmvc.RestAssuredMockMvc.given
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.notNullValue
 import org.junit.jupiter.api.DisplayName
-import side.flab.goforawalk.app.support.BaseE2ETest
+import side.flab.goforawalk.app.support.BaseRestAssuredTest
 import side.flab.goforawalk.app.support.fixture.FootstepFixture.createFootstep
 import side.flab.goforawalk.app.support.fixture.FootstepFixture.save
 import side.flab.goforawalk.app.support.fixture.TestDateUtil.dateOf
@@ -14,7 +14,7 @@ import side.flab.goforawalk.security.oauth2.OAuth2Provider.APPLE
 import kotlin.test.Test
 
 @DisplayName("GET /api/v1/profile")
-class GET_specs : BaseE2ETest() {
+class GET_specs : BaseRestAssuredTest() {
     @Test
     fun `인증 토큰이 유효하지 않을 경우 401 Unauthorized 상태 코드를 반환한다`() {
         // Arrange
@@ -64,7 +64,8 @@ class GET_specs : BaseE2ETest() {
     @Test
     fun `닉네임이 8글자를 초과할 경우 8글자까지만 조회된다`() {
         // Arrange
-        val user = createSeoulUser(nickname = "123456789", provider = APPLE, email = "test@test.com").save(userRepository)
+        val user =
+            createSeoulUser(nickname = "123456789", provider = APPLE, email = "test@test.com").save(userRepository)
         createFootstep(user, dateOf("2025-02-27")).save(footstepRepository)
         createFootstep(user, dateOf("2025-02-28")).save(footstepRepository)
         createFootstep(user, dateOf("2025-03-02")).save(footstepRepository)

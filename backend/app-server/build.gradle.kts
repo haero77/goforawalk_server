@@ -60,6 +60,7 @@ dependencies {
 
     // wiremock
     testImplementation("org.springframework.cloud:spring-cloud-contract-wiremock:4.1.4")
+    testImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner")
 
     // rest-assured
     testImplementation("io.rest-assured:rest-assured:5.5.1")
