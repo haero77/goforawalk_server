@@ -22,7 +22,7 @@ class UserLoginFailureHandler(
         response: HttpServletResponse,
         e: AuthenticationException,
     ) {
-        log.warn(e) { "User Login failed: ${e.message}" }
+        log.error(e) { "User Login failed: ${e.message}" }
 
         val errorResponse = ErrorResponse.authenticationFailed("login failed: ${e.message}")
 

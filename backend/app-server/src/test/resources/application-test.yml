@@ -29,7 +29,7 @@ spring:
         provider:
           kakao:
             issuer-uri: "https://kauth.kakao.com"
-            jwk-set-uri: "http://localhost:8089/kakao/.well-known/jwks.json"
+            jwk-set-uri: http://localhost:${wiremock.server.port}/kakao/.well-known/jwks.json
 
   output:
     ansi:

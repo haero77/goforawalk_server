@@ -1,10 +1,10 @@
 package side.flab.goforawalk.app.api.v1.footsteps
 
-import io.restassured.RestAssured.given
+import io.restassured.module.mockmvc.RestAssuredMockMvc.given
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.notNullValue
 import org.junit.jupiter.api.DisplayName
-import side.flab.goforawalk.app.support.BaseE2ETest
+import side.flab.goforawalk.app.support.BaseRestAssuredTest
 import side.flab.goforawalk.app.support.fixture.FootstepFixture.createFootstep
 import side.flab.goforawalk.app.support.fixture.FootstepFixture.save
 import side.flab.goforawalk.app.support.fixture.TestDateUtil.dateOf
@@ -13,7 +13,7 @@ import side.flab.goforawalk.app.support.fixture.UserFixture.save
 import kotlin.test.Test
 
 @DisplayName("GET /api/v1/footsteps")
-class GET_specs : BaseE2ETest() {
+class GET_specs : BaseRestAssuredTest() {
     @Test
     fun `인증 토큰이 유효하지 않을 경우 401 Unauthorized 상태 코드를 반환한다`() {
         // Arrange
