@@ -48,6 +48,19 @@ dependencies {
     runtimeOnly("com.oracle.database.security:osdt_core:${oracleSecurityVersion}")
     runtimeOnly("com.oracle.database.security:osdt_cert:${oracleSecurityVersion}")
 
+    /**
+     * Object Storage
+     */
+    implementation("com.oracle.oci.sdk:oci-java-sdk:3.38.0")
+    implementation("com.oracle.oci.sdk:oci-java-sdk-common:3.38.0")
+    implementation("com.oracle.oci.sdk:oci-java-sdk-objectstorage:3.38.0")
+    implementation("com.oracle.oci.sdk:oci-java-sdk-common-httpclient:3.38.0")
+    implementation("com.oracle.oci.sdk:oci-java-sdk-common-httpclient-choices:3.38.0")
+    implementation("com.oracle.oci.sdk:oci-java-sdk-common-httpclient-jersey3:3.37.0")
+//    implementation("com.oracle.oci.sdk:oci-java-sdk-objectstorage")
+//    implementation("com.oracle.oci.sdk:oci-java-sdk-common-httpclient-jersey")
+
+
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
 
     implementation("io.jsonwebtoken:jjwt-api:0.12.6")
@@ -82,10 +95,14 @@ dependencies {
     implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0")
 }
 
+extra["ociSdkVersion"] = "3.68.0"
+
 dependencyManagement {
     imports {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
         mavenBom("com.google.cloud:libraries-bom:26.59.0") // GCP BOM
+
+        mavenBom("com.oracle.oci.sdk:oci-java-sdk-bom:${property("ociSdkVersion")}")
     }
 }
 

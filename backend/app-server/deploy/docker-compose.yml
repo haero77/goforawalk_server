@@ -10,6 +10,7 @@ services:
       - "8080:8080"
     volumes:
       - ./Wallet:/app/Wallet
+      - ~/.oci:/root/.oci:ro # ~/.oci 폴더를 컨테이너 내부의 /root/.oci 폴더로 연결 (:ro 는 읽기 전용)
     environment:
       - TNS_ADMIN=/app/Wallet
     env_file:
