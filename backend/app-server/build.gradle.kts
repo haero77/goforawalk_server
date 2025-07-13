@@ -18,6 +18,8 @@ java {
 
 repositories {
     mavenCentral()
+
+    maven("https://maven.oracle.com/public")
 }
 
 extra["snippetsDir"] = file("build/generated-snippets")
@@ -40,6 +42,11 @@ dependencies {
 
     runtimeOnly("com.h2database:h2")
     runtimeOnly("com.mysql:mysql-connector-j")
+    val oracleSecurityVersion = "21.18.0.0"
+    implementation("com.oracle.database.jdbc:ojdbc11:${oracleSecurityVersion}")
+    runtimeOnly("com.oracle.database.security:oraclepki:${oracleSecurityVersion}")
+    runtimeOnly("com.oracle.database.security:osdt_core:${oracleSecurityVersion}")
+    runtimeOnly("com.oracle.database.security:osdt_cert:${oracleSecurityVersion}")
 
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
 

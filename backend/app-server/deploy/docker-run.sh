@@ -24,6 +24,6 @@ sudo docker compose --env-file .env up -d
 
 # 컨테이너 상태 확인
 echo ">>>>> 애플리케이션 컨테이너 상태 확인 중..."
-sudo docker ps | grep app-server-container || echo "컨테이너가 실행되지 않았습니다. 로그를 확인해주세요." # sudo 추가
+sudo docker ps | grep app-server || echo "컨테이너가 실행되지 않았습니다. 로그를 확인해주세요." # sudo 추가
 
 echo "===== 애플리케이션 서버 컨테이너 배포 완료 ====="

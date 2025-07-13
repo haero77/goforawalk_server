@@ -8,5 +8,9 @@ services:
     restart: always
     ports:
       - "8080:8080"
+    volumes:
+      - ./Wallet:/app/Wallet
+    environment:
+      - TNS_ADMIN=/app/Wallet
     env_file:
       - .env # .env 파일의 모든 환경변수를 컨테이너에 주입
