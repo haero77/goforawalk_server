@@ -10,8 +10,7 @@ import side.flab.goforawalk.app.support.image.ImageUploader
 
 private val log = KotlinLogging.logger {}
 
-@Deprecated("GCP 만료로 인한 사용 중지")
-//@Component
+@Component
 class GcpImageUploader(
     private val gcpProperties: GcpProperties,
     private val storage: Storage
