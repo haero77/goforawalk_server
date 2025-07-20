@@ -3,13 +3,9 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: validate
-#    properties:
-#      hibernate.dialect: org.hibernate.dialect.OracleDialect
-#      hibernate.jdbc.time_zone: UTC
-#    database-platform: org.hibernate.dialect.OracleDialect
 
   datasource:
-    driver-class-name: oracle.jdbc.OracleDriver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${DB_URL}
     username: ${DB_USER}
     password: ${DB_PW}

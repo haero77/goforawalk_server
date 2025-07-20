@@ -26,7 +26,6 @@ extra["snippetsDir"] = file("build/generated-snippets")
 extra["springCloudVersion"] = "2024.0.1"
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -40,16 +39,14 @@ dependencies {
 
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
 
-    runtimeOnly("com.h2database:h2")
+    // DB
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly("com.mysql:mysql-connector-j")
-    val oracleSecurityVersion = "21.18.0.0"
-    implementation("com.oracle.database.jdbc:ojdbc11:${oracleSecurityVersion}")
-    runtimeOnly("com.oracle.database.security:oraclepki:${oracleSecurityVersion}")
-    runtimeOnly("com.oracle.database.security:osdt_core:${oracleSecurityVersion}")
-    runtimeOnly("com.oracle.database.security:osdt_cert:${oracleSecurityVersion}")
+    runtimeOnly("com.h2database:h2")
 
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
 
+    // JWT
     implementation("io.jsonwebtoken:jjwt-api:0.12.6")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
