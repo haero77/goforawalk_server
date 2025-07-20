@@ -48,19 +48,6 @@ dependencies {
     runtimeOnly("com.oracle.database.security:osdt_core:${oracleSecurityVersion}")
     runtimeOnly("com.oracle.database.security:osdt_cert:${oracleSecurityVersion}")
 
-    /**
-     * Object Storage
-     */
-    implementation("com.oracle.oci.sdk:oci-java-sdk:3.38.0")
-    implementation("com.oracle.oci.sdk:oci-java-sdk-common:3.38.0")
-    implementation("com.oracle.oci.sdk:oci-java-sdk-objectstorage:3.38.0")
-    implementation("com.oracle.oci.sdk:oci-java-sdk-common-httpclient:3.38.0")
-    implementation("com.oracle.oci.sdk:oci-java-sdk-common-httpclient-choices:3.38.0")
-    implementation("com.oracle.oci.sdk:oci-java-sdk-common-httpclient-jersey3:3.37.0")
-//    implementation("com.oracle.oci.sdk:oci-java-sdk-objectstorage")
-//    implementation("com.oracle.oci.sdk:oci-java-sdk-common-httpclient-jersey")
-
-
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
 
     implementation("io.jsonwebtoken:jjwt-api:0.12.6")
