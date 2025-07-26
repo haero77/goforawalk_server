@@ -24,7 +24,7 @@ class Footstep constructor(
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
     val user: User,
 
-    @Column(name = "date", nullable = false, updatable = false)
+    @Column(name = "issue_date", nullable = false, updatable = false)
     val date: LocalDate,
 
     @Column(name = "image_url", length = 255, nullable = false, updatable = false)

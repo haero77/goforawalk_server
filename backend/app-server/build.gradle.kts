@@ -18,13 +18,14 @@ java {
 
 repositories {
     mavenCentral()
+
+    maven("https://maven.oracle.com/public")
 }
 
 extra["snippetsDir"] = file("build/generated-snippets")
 extra["springCloudVersion"] = "2024.0.1"
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -38,11 +39,14 @@ dependencies {
 
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
 
-    runtimeOnly("com.h2database:h2")
+    // DB
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly("com.mysql:mysql-connector-j")
+    runtimeOnly("com.h2database:h2")
 
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
 
+    // JWT
     implementation("io.jsonwebtoken:jjwt-api:0.12.6")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
@@ -75,10 +79,14 @@ dependencies {
     implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0")
 }
 
+extra["ociSdkVersion"] = "3.68.0"
+
 dependencyManagement {
     imports {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
         mavenBom("com.google.cloud:libraries-bom:26.59.0") // GCP BOM
+
+        mavenBom("com.oracle.oci.sdk:oci-java-sdk-bom:${property("ociSdkVersion")}")
     }
 }
 
