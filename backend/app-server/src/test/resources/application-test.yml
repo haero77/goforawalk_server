@@ -25,11 +25,17 @@ spring:
       client:
         registration:
           kakao:
-            client-id: "KAKAO_CLIENT_ID" # idToken.aud에 해당
+            client-id: KAKAO_CLIENT_ID # idToken.aud에 해당
+          apple:
+            client-id: APPLE_CLIENT_ID # idToken.aud에 해당
         provider:
           kakao:
-            issuer-uri: "https://kauth.kakao.com"
+            issuer-uri: https://kauth.kakao.com
             jwk-set-uri: http://localhost:${wiremock.server.port}/kakao/.well-known/jwks.json
+          apple:
+            issuer-uri: https://appleid.apple.com
+            # Apple Public Key: https://developer.apple.com/documentation/signinwithapplerestapi/fetch_apple_s_public_key_for_verifying_token_signature
+            jwk-set-uri: http://localhost:${wiremock.server.port}/auth/keys
 
   output:
     ansi:
