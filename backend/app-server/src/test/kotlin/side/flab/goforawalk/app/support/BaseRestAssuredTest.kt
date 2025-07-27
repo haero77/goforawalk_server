@@ -49,5 +49,14 @@ abstract class BaseRestAssuredTest : BaseIntegrationTest() {
                         .withBody(OidcLoginTest.kakaoJwkSetJson)
                 )
         )
+        stubFor(
+            get(urlEqualTo("/auth/keys"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(OidcLoginTest.appleJwkSetJson)
+                )
+        )
     }
 }

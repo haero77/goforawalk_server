@@ -8,7 +8,7 @@ import org.springframework.restdocs.request.RequestDocumentation.parameterWithNa
 import org.springframework.restdocs.request.RequestDocumentation.pathParameters
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import side.flab.goforawalk.app.auth.OidcLoginTest.Companion.sampleIdToken
+import side.flab.goforawalk.app.auth.OidcLoginTest.Companion.sampleKaKaoIdToken
 import side.flab.goforawalk.security.oauth2.OAuth2Provider
 import side.flab.goforawalk.security.oauth2.OidcLoginRequest
 import javax.swing.text.html.HTML.Tag.OBJECT
@@ -18,7 +18,7 @@ class LoginApiDocsTest : DocsTestSupport(){
     @Test
     fun `login-oidc-success`() {
         val provider = OAuth2Provider.KAKAO
-        val request = OidcLoginRequest(sampleIdToken())
+        val request = OidcLoginRequest(sampleKaKaoIdToken())
 
         mockMvc.perform(
             post("/api/v1/auth/login/oauth2/{provider}", provider)
