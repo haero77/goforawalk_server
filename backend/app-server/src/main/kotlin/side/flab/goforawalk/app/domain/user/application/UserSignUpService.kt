@@ -20,13 +20,18 @@ class UserSignUpService(
             userInfo.providerUsername
         ) ?: createUser(userInfo)
 
-        return AppUserDetails(user.id!!, user.nickname)
+        return AppUserDetails(
+            _userId = user.id!!,
+            nickname = user.nickname,
+            email = user.email
+        )
     }
 
     private fun createUser(userInfo: OidcUserInfo): User {
         val user = User.of(
             provider = userInfo.provider,
             providerUsername = userInfo.providerUsername,
+            email = userInfo.email,
         )
 
         val newUser = userRepository.save(user)
