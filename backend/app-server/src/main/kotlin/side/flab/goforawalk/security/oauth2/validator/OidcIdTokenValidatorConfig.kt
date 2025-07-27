@@ -10,11 +10,9 @@ import side.flab.goforawalk.security.oauth2.OidcIdTokenDecoderConfig
 class OidcIdTokenValidatorConfig {
     @Bean
     fun oidcIdTokenValidatorFactory(
-        kakaoOidcIdTokenValidator: OidcIdTokenValidator,
+        validators: Set<OidcIdTokenValidator>,
     ): OidcIdTokenValidatorFactory {
-        return OidcIdTokenValidatorFactory(
-            setOf(kakaoOidcIdTokenValidator),
-        )
+        return OidcIdTokenValidatorFactory(validators)
     }
 
     @Bean
@@ -23,5 +21,13 @@ class OidcIdTokenValidatorConfig {
         kakaoIdTokenDecoder: JwtDecoder,
     ): OidcIdTokenValidator {
         return KakaoIdTokenValidator(kakaoIdTokenDecoder)
+    }
+
+    @Bean
+    fun appleOidcIdTokenValidator(
+        @Qualifier(OidcIdTokenDecoderConfig.APPLE_ID_TOKEN_DECODER_BEAN_NAME)
+        appleIdTokenDecoder: JwtDecoder,
+    ): OidcIdTokenValidator {
+        return AppleIdTokenValidator(appleIdTokenDecoder)
     }
 }
