@@ -108,6 +108,7 @@ tasks.jar {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    systemProperty("user.timezone", "UTC") // 테스트 수행 시 UTC 기준으로 수행
 }
 
 // bootJar 태스크 설정 - 문서 복사 로직 직접 포함
