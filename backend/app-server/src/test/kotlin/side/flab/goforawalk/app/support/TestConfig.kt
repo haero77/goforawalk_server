@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType
 import org.springframework.security.oauth2.core.AuthorizationGrantType.AUTHORIZATION_CODE
 import side.flab.goforawalk.app.support.image.ImageUploader
 import side.flab.goforawalk.app.support.mock.FakeImageUploader
+import side.flab.goforawalk.security.oauth2.OAuth2Provider.APPLE
 
 @Profile("test")
 @Configuration
@@ -41,6 +42,21 @@ class TestConfig(
             .jwkSetUri(kakaoProvider.jwkSetUri)
             .build()
         registrations.add(clientRegistration)
+
+        val apple = APPLE.provider
+        val appleRegistration = oauth2ClientProperties.registration[apple] ?: error("apple registration not found")
+        val appleProvider = oauth2ClientProperties.provider[apple] ?: error("apple provider not found")
+
+        val appleClientRegistration = ClientRegistration.withRegistrationId(apple)
+            .clientId(appleRegistration.clientId)
+            .authorizationGrantType(AuthorizationGrantType(AUTHORIZATION_CODE.value))
+            .redirectUri(appleRegistration.redirectUri ?: "redirect-uri")
+            .authorizationUri(appleRegistration.redirectUri ?: "authorization-uri")
+            .tokenUri(appleProvider.tokenUri ?: "token-uri")
+            .issuerUri(appleProvider.issuerUri)
+            .jwkSetUri(appleProvider.jwkSetUri)
+            .build()
+        registrations.add(appleClientRegistration)
 
         return InMemoryClientRegistrationRepository(registrations)
     }

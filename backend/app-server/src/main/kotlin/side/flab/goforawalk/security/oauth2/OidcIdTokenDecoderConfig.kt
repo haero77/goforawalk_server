@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm
 import org.springframework.security.oauth2.jwt.JwtDecoder
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder
+import side.flab.goforawalk.security.oauth2.OAuth2Provider.APPLE
 import side.flab.goforawalk.security.oauth2.OAuth2Provider.KAKAO
 import java.util.concurrent.TimeUnit
 
@@ -22,6 +23,7 @@ class OidcIdTokenDecoderConfig {
     companion object {
         const val JWK_SET_CACHE = "jwkSetCache"
         const val KAKAO_ID_TOKEN_DECODER_BEAN_NAME = "kakaoIdTokenDecoder"
+        const val APPLE_ID_TOKEN_DECODER_BEAN_NAME = "appleIdTokenDecoder"
     }
 
     @Bean
@@ -67,5 +69,27 @@ class OidcIdTokenDecoderConfig {
         kakaoIdTokenDecoder.setJwtValidator(OidcIdTokenValidator(kakaoRegistration))
 
         return kakaoIdTokenDecoder
+    }
+
+    @Bean(name = [APPLE_ID_TOKEN_DECODER_BEAN_NAME])
+    fun appleIdTokenDecoder(
+        @Qualifier(JWK_SET_CACHE) jwkSetCache: Cache,
+        clientRegistrationRepository: ClientRegistrationRepository,
+    ): JwtDecoder {
+        val appleRegistration =
+            clientRegistrationRepository.findByRegistrationId(APPLE.provider)
+                ?: throw BeanInitializationException("ClientRegistration for provider $APPLE not found")
+
+        val jwkSetUri = (appleRegistration.providerDetails.jwkSetUri
+            ?: throw BeanInitializationException("provider $APPLE jwk-set-uri not found"))
+
+        val appleIdTokenDecoder = NimbusJwtDecoder
+            .withJwkSetUri(jwkSetUri) // issuer-uri 세팅 시 jwk-set-uri 세팅을 위한 issuer-uri 호출 발생
+            .jwsAlgorithm(SignatureAlgorithm.RS256) // 미지정 시 JWKSource 업데이트를 위한 API jwk-set-uri 호출 발생
+            .cache(jwkSetCache)
+            .build()
+        appleIdTokenDecoder.setJwtValidator(OidcIdTokenValidator(appleRegistration))
+
+        return appleIdTokenDecoder
     }
 }

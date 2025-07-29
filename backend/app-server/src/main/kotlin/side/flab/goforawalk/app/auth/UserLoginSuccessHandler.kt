@@ -39,7 +39,10 @@ class UserLoginSuccessHandler(
             UserLoginResponse(
                 userId = userDetails.getUserId(),
                 credentials = appToken,
-                userInfo = UserInfo(nickname = userDetails.nickname)
+                userInfo = UserInfo(
+                    nickname = userDetails.nickname,
+                    email = userDetails.email
+                )
             )
         )
 

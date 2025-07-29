@@ -23,8 +23,12 @@ class OidcAuthenticationProvider(
 
         try {
             val validatedIdToken = validateIdToken(token)
-            val userDetails =
-                userService.loadUser(OidcUserInfo(token.provider, validatedIdToken.claims["sub"] as String))
+            val userInfo = OidcUserInfo(
+                provider = token.provider,
+                providerUsername = validatedIdToken.claims["sub"] as String,
+                email = validatedIdToken.claims["email"] as String?,
+            )
+            val userDetails = userService.loadUser(userInfo)
 
             return UsernamePasswordAuthenticationToken.authenticated(
                 userDetails,

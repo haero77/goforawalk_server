@@ -6,6 +6,7 @@ import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.notNullValue
 import org.junit.jupiter.api.Assertions.assertAll
 import org.junit.jupiter.api.DisplayName
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpHeaders.AUTHORIZATION
 import org.springframework.http.MediaType
@@ -13,11 +14,15 @@ import org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE
 import side.flab.goforawalk.app.support.BaseRestAssuredTest
 import side.flab.goforawalk.app.support.fixture.UserFixture.createSeoulUser
 import side.flab.goforawalk.app.support.fixture.UserFixture.save
+import side.flab.goforawalk.app.support.util.ClockHolder
 import java.time.LocalDate
 import kotlin.test.Test
 
 @DisplayName("POST /api/v1/footsteps")
 class POST_specs : BaseRestAssuredTest() {
+
+    @Autowired
+    private lateinit var clockHolder: ClockHolder
 
     @Test
     fun `인증 토큰이 유효하지 않을 경우 401 Unauthorized 상태 코드를 반환한다`() {
@@ -58,7 +63,7 @@ class POST_specs : BaseRestAssuredTest() {
                 "data.userId", equalTo(user.id!!.toInt()),
                 "data.userNickname", equalTo("산책왕"),
                 "data.footstepId", notNullValue(),
-                "data.date", equalTo(LocalDate.now().toString()),
+                "data.date", equalTo(user.getLocalDate(clockHolder).toString()),
                 "data.imageUrl", notNullValue(),
                 "data.content", equalTo(content),
                 "data.createdAt", notNullValue()

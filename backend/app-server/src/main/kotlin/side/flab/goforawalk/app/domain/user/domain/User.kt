@@ -32,7 +32,7 @@ class User constructor(
     @Enumerated(EnumType.STRING)
     val provider: OAuth2Provider,
 
-    @Column(name = "provider_username", nullable = false, length = 30)
+    @Column(name = "provider_username", nullable = false, length = 100)
     var providerUsername: String,
 
     nickname: String,
@@ -60,11 +60,13 @@ class User constructor(
         fun of(
             provider: OAuth2Provider,
             providerUsername: String,
+            email: String? = null
         ): User {
             return User(
                 provider = provider,
                 providerUsername = providerUsername,
                 nickname = generateRandomNickname(),
+                email = email
             )
         }
 
