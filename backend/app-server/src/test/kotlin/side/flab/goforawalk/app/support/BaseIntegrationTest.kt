@@ -8,6 +8,7 @@ import side.flab.goforawalk.app.auth.AppAuthTokenProvider
 import side.flab.goforawalk.app.domain.footstep.domain.FootstepRepository
 import side.flab.goforawalk.app.domain.user.domain.User
 import side.flab.goforawalk.app.domain.user.domain.UserRepository
+import side.flab.goforawalk.app.support.fixture.AuthFixture
 import side.flab.goforawalk.app.support.fixture.LoginFixture.generateAT
 
 @Profile("test")
@@ -26,6 +27,9 @@ abstract class BaseIntegrationTest {
 
     @Autowired
     lateinit var authTokenProvider: AppAuthTokenProvider
+
+    @Autowired
+    lateinit var authFixture: AuthFixture
 
     fun generateAccessToken(user: User): String {
         return generateAT(

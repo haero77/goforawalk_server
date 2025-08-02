@@ -57,6 +57,8 @@ class User constructor(
     }
 
     companion object {
+        const val NICKNAME_UPDATE_MAX_LENGTH = 8
+
         fun of(
             provider: OAuth2Provider,
             providerUsername: String,
@@ -74,6 +76,10 @@ class User constructor(
             val uuid = UUID.randomUUID().toString()
             return "user_${uuid}"
         }
+    }
+
+    fun updateNickname(nickname: String) {
+        this.nickname = nickname
     }
 
     fun getLocalDate(clockHolder: ClockHolder): LocalDate {

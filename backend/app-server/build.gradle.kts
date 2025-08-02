@@ -37,7 +37,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 
+    // OpenFeign
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+
+    // Validation
+    implementation("org.springframework.boot:spring-boot-starter-validation")
 
     // DB
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
