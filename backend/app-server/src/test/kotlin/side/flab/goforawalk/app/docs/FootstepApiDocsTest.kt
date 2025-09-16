@@ -16,6 +16,7 @@ import side.flab.goforawalk.app.support.fixture.FootstepFixture.save
 import side.flab.goforawalk.app.support.fixture.TestDateUtil.dateOf
 import side.flab.goforawalk.app.support.fixture.UserFixture.createSeoulUser
 import side.flab.goforawalk.app.support.fixture.UserFixture.save
+import java.time.LocalDate
 
 class FootstepApiDocsTest : DocsTestSupport() {
     @Test
@@ -166,6 +167,76 @@ class FootstepApiDocsTest : DocsTestSupport() {
                     ),
                     pathParameters(
                         parameterWithName("footstepId").description("삭제할 발자취 ID")
+                    )
+                )
+            )
+    }
+
+    @Test
+    fun `footstep-today-availability-can-create`() {
+        // Arrange - 오늘 발자취가 없는 경우
+        val user = createSeoulUser(
+            nickname = "산책러버",
+            providerUsername = "docs-test-user-1"
+        ).save(userRepository)
+        val accessToken = generateAccessToken(user)
+
+        // 어제 발자취만 생성
+        createFootstep(user, LocalDate.now().minusDays(1)).save(footstepRepository)
+
+        // Act & Assert
+        mockMvc.perform(
+            get("/api/v1/footsteps/today/availability")
+                .header("Authorization", "Bearer $accessToken")
+                .accept(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isOk)
+            .andDo(
+                docs.document(
+                    requestHeaders(
+                        headerWithName("Authorization").description("AccessToken")
+                    ),
+                    responseFields(
+                        fieldWithPath("data.canCreateToday").description("오늘 발자취 생성 가능 여부").type(BOOLEAN),
+                        fieldWithPath("data.todayDate").description("오늘 날짜 (YYYY-MM-DD 형식)").type(STRING),
+                        fieldWithPath("data.existingFootstep").description("기존 발자취 정보 (없으면 null)").type(NULL).optional()
+                    )
+                )
+            )
+    }
+
+    @Test
+    fun `footstep-today-availability-cannot-create`() {
+        // Arrange - 오늘 발자취가 있는 경우
+        val user = createSeoulUser(
+            nickname = "매일산책",
+            providerUsername = "docs-test-user-2"
+        ).save(userRepository)
+        val accessToken = generateAccessToken(user)
+
+        // 오늘 발자취 생성
+        val todayFootstep = createFootstep(user, LocalDate.now()).save(footstepRepository)
+
+        // Act & Assert
+        mockMvc.perform(
+            get("/api/v1/footsteps/today/availability")
+                .header("Authorization", "Bearer $accessToken")
+                .accept(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isOk)
+            .andDo(
+                docs.document(
+                    requestHeaders(
+                        headerWithName("Authorization").description("AccessToken")
+                    ),
+                    responseFields(
+                        fieldWithPath("data.canCreateToday").description("오늘 발자취 생성 가능 여부").type(BOOLEAN),
+                        fieldWithPath("data.todayDate").description("오늘 날짜 (YYYY-MM-DD 형식)").type(STRING),
+                        fieldWithPath("data.existingFootstep").description("기존 발자취 정보").type(OBJECT),
+                        fieldWithPath("data.existingFootstep.footstepId").description("기존 발자취 ID").type(NUMBER),
+                        fieldWithPath("data.existingFootstep.imageUrl").description("기존 발자취 이미지 URL").type(STRING),
+                        fieldWithPath("data.existingFootstep.content").description("기존 발자취 내용").type(STRING),
+                        fieldWithPath("data.existingFootstep.createdAt").description("기존 발자취 생성 일시 (ISO-8601 형식)").type(STRING)
                     )
                 )
             )

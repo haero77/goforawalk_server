@@ -3,6 +3,7 @@ package side.flab.goforawalk.app.api.footstep
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import side.flab.goforawalk.app.api.footstep.dto.FootstepQueryResponse
+import side.flab.goforawalk.app.api.footstep.dto.TodayAvailabilityResponse
 import side.flab.goforawalk.app.domain.footstep.application.FootstepCreateService
 import side.flab.goforawalk.app.domain.footstep.application.FootstepDeleteService
 import side.flab.goforawalk.app.domain.footstep.application.FootstepQueryService
@@ -47,5 +48,13 @@ class FootstepController(
         @PathVariable footstepId: Long,
     ) {
         deleteService.delete(footstepId)
+    }
+
+    @GetMapping("/v1/footsteps/today/availability")
+    fun getTodayFootstepAvailability(
+        @CurrentUserId userId: Long,
+    ): ApiResponse<TodayAvailabilityResponse> {
+        val response = footstepQueryService.getTodayAvailability(userId)
+        return ApiResponse(response)
     }
 }
