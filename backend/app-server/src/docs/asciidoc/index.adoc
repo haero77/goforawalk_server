@@ -24,7 +24,6 @@
 |Authorization |Bearer \{AccessToken}
 |===
 
-
 ////
 인증
 ////
@@ -39,22 +38,25 @@ include::{snippets}/login-oidc-success/path-parameters.adoc[]
 include::{snippets}/login-oidc-success/request-fields.adoc[]
 
 ==== 로그인 성공 응답
+
 include::{snippets}/login-oidc-success/http-response.adoc[]
 
 include::{snippets}/login-oidc-success/response-fields.adoc[]
 
 ==== 로그인 실패 응답
+
 include::{snippets}/login-oidc-failure/http-response.adoc[]
 include::{snippets}/login-oidc-failure/response-fields.adoc[]
 
 === 회원탈퇴
 
 ==== 요청
+
 include::{snippets}/user-delete-success/http-request.adoc[]
 
 ==== 성공 응답
-include::{snippets}/user-delete-success/http-response.adoc[]
 
+include::{snippets}/user-delete-success/http-response.adoc[]
 
 ////
 프로필
@@ -64,11 +66,24 @@ include::{snippets}/user-delete-success/http-response.adoc[]
 === 유저 프로필 조회
 
 ==== 요청
+
 include::{snippets}/profile-success/http-request.adoc[]
 
 ==== 성공 응답
+
 include::{snippets}/profile-success/http-response.adoc[]
 include::{snippets}/profile-success/response-fields.adoc[]
+
+=== 유저 닉네임 변경
+
+==== 요청
+
+include::{snippets}/profile-update-nickname-success/http-request.adoc[]
+include::{snippets}/profile-update-nickname-success/request-fields.adoc[]
+
+==== 성공 응답
+
+include::{snippets}/profile-update-nickname-success/http-response.adoc[]
 
 ////
 발자취
@@ -78,6 +93,7 @@ include::{snippets}/profile-success/response-fields.adoc[]
 === 발자취 리스트 조회
 
 ==== 요청
+
 include::{snippets}/footstep-list-success/http-request.adoc[]
 
 ==== 성공 응답
@@ -88,6 +104,7 @@ include::{snippets}/footstep-list-success/response-fields.adoc[]
 === 발자취 생성
 
 ==== 요청
+
 include::{snippets}/footstep-create-success/http-request.adoc[]
 include::{snippets}/footstep-create-success/request-parts.adoc[]
 
