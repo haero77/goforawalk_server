@@ -30,4 +30,13 @@ interface FootstepRepository : JpaRepository<Footstep, Long> {
         where fs.user.id = :userId"""
     )
     fun findAllByUserIdFetchJoinUser(userId: Long): List<Footstep>
+
+    @Query(
+        """
+        select fs 
+        from Footstep fs
+            join fetch fs.user u
+        where fs.user.id = :userId and fs.date = :date"""
+    )
+    fun findByUserIdAndDate(userId: Long, date: LocalDate): Footstep?
 }

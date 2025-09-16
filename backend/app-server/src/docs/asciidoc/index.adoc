@@ -127,3 +127,19 @@ include::{snippets}/footstep-delete-success/path-parameters.adoc[]
 ==== 성공 응답
 
 include::{snippets}/footstep-delete-success/http-response.adoc[]
+
+=== 오늘 발자취 생성 가능 여부 조회
+
+==== 요청
+
+include::{snippets}/footstep-today-availability-can-create/http-request.adoc[]
+
+==== 성공 응답 (생성 가능)
+
+include::{snippets}/footstep-today-availability-can-create/http-response.adoc[]
+include::{snippets}/footstep-today-availability-can-create/response-fields.adoc[]
+
+==== 성공 응답 (생성 불가 - 오늘 발자취 있음)
+
+include::{snippets}/footstep-today-availability-cannot-create/http-response.adoc[]
+include::{snippets}/footstep-today-availability-cannot-create/response-fields.adoc[]
