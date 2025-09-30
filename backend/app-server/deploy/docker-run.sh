@@ -10,17 +10,17 @@ sudo docker image prune -f
 
 # 기존 컨테이너 중지 및 제거
 echo ">>>>> 기존 컨테이너 정리 중..."
-sudo docker-compose down || true
+sudo docker compose down || true
 sudo docker stop app-server || true
 sudo docker rm app-server || true
 
 # Docker 이미지 빌드
 echo ">>>>> Docker 이미지 빌드 중..."
-sudo docker-compose build
+sudo docker compose build
 
 # 컨테이너 시작
 echo ">>>>> 애플리케이션 컨테이너 시작 중..."
-sudo docker-compose --env-file aws-prod.env up -d
+sudo docker compose up -d
 
 # 컨테이너 상태 확인
 echo ">>>>> 애플리케이션 컨테이너 상태 확인 중..."

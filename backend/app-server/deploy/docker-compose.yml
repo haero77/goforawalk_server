@@ -9,4 +9,11 @@ services:
     ports:
       - "8080:8080" # 호스트의 8080포트로 들어오는 요청을 컨테이너의 8080포트로 전달
     env_file:
-      - aws-prod.env # aws-prod.env 파일의 모든 환경변수를 컨테이너에 주입
+      - prod-shkim-home-server.env # .env 파일의 모든 환경변수를 컨테이너에 주입
+    networks:
+      - default
+
+networks:
+  default:
+    external: true
+    name: goforawalk-network
