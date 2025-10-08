@@ -10,7 +10,7 @@ create table users
     id                bigint auto_increment,
     created_at        timestamp(6) not null,
     updated_at        timestamp(6) not null,
-    provider_username varchar(30)  not null,
+    provider_username varchar(100)  not null,
     created_by        varchar(50),
     email             varchar(50),
     nickname          varchar(50)  not null,
