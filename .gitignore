@@ -1,0 +1,12 @@
+# IDE
+.DS_Store
+.idea/
+*.iml
+
+# Gradle
+.gradle/
+build/
+out/
+
+# Backend specific
+backend/.DS_Store
