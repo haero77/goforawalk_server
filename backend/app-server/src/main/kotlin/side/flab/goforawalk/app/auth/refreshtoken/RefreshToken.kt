@@ -19,15 +19,15 @@ class RefreshToken(
   @Column(name = "issued_at", nullable = false, updatable = false)
   val issuedAt: Instant,
 
-  @Column(name = "expires_at", nullable = false, updatable = false)
-  val expiresAt: Instant
+  @Column(name = "expired_at", nullable = false, updatable = false)
+  val expiredAt: Instant
 ) : BaseEntityWithoutActiveStatus() {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   val id: Long? = null
 
   fun expired(now: Instant): Boolean {
-    return now.isAfter(this.expiresAt)
+    return now.isAfter(this.expiredAt)
   }
 
   fun tokenEquals(otherToken: String): Boolean {

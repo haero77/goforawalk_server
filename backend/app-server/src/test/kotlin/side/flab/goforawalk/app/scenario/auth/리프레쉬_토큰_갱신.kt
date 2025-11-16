@@ -167,7 +167,7 @@ class 리프레쉬_토큰_갱신 : BaseRestAssuredTest() {
         userId = userId,
         token = "stored-but-different-token",
         issuedAt = loginInstant,
-        expiresAt = loginInstant.plusSeconds(jwtProperties.rtExpirationSeconds)
+        expiredAt = loginInstant.plusSeconds(jwtProperties.rtExpirationSeconds)
       )
     )
 

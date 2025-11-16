@@ -42,7 +42,7 @@ class AppAuthTokenProvider(
             userId = userDetails.getUserId(),
             token = refreshToken,
             issuedAt = now,
-            expiresAt = getRefreshTokenExpiresAt(now)
+            expiredAt = getRefreshTokenExpiresAt(now)
         )
         refreshTokenRepository.save(newRefreshToken)
 

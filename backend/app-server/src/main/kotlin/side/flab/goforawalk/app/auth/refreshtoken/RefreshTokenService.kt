@@ -21,7 +21,7 @@ class RefreshTokenService(
             userId = userId,
             token = token,
             issuedAt = now,
-            expiresAt = expiresAt
+            expiredAt = expiresAt
         )
         refreshTokenRepository.save(newRefreshToken)
     }

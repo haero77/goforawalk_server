@@ -110,7 +110,7 @@ class 인증_리프레쉬_토큰_갱신_API : DocsTestSupport() {
         userId = loginResponse.userId,
         token = "stored-but-different-token",
         issuedAt = loginInstant,
-        expiresAt = loginInstant.plusSeconds(jwtProperties.rtExpirationSeconds)
+        expiredAt = loginInstant.plusSeconds(jwtProperties.rtExpirationSeconds)
       )
     )
 
