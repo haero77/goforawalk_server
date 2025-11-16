@@ -12,6 +12,7 @@ import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock
 import org.springframework.context.ApplicationContext
 import org.springframework.test.web.servlet.MockMvc
 import side.flab.goforawalk.app.auth.OidcLoginTest
+import side.flab.goforawalk.app.support.fixture.AuthFixture
 
 private val log = KotlinLogging.logger {}
 

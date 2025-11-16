@@ -18,7 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter
 
 private val log = KotlinLogging.logger {}
 
-class OidcLoginAuthenticationFilter(
+class OidcLoginAuthenticationFilter constructor(
     private val objectMapper: ObjectMapper,
     private val authenticationManager: AuthenticationManager,
     private val successHandler: AuthenticationSuccessHandler,
