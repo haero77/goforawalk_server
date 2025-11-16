@@ -129,7 +129,7 @@ class 리프레쉬_토큰_갱신 : BaseRestAssuredTest() {
   }
 
   @Test
-  fun `존재하지 않는 리프레쉬 토큰으로 갱신 시도 시 401 에러`() {
+  fun `존재하지 않는 리프레쉬 토큰-으로 갱신 시도 시 401 에러`() {
     RestAssuredMockMvc.given()
       .log().all()
       .`when`()
@@ -137,7 +137,7 @@ class 리프레쉬_토큰_갱신 : BaseRestAssuredTest() {
       .then()
       .log().all()
       .statusCode(401)
-      .body("code", equalTo(ApiErrorCode.A_4104.name))
+      .body("code", equalTo(ApiErrorCode.A_4140.name))
   }
 
   @Test

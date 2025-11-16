@@ -25,7 +25,7 @@
 |===
 
 ////
-인증
+인증/호원
 ////
 == 인증/회원
 
@@ -47,6 +47,33 @@ include::{snippets}/login-oidc-success/response-fields.adoc[]
 
 include::{snippets}/login-oidc-failure/http-response.adoc[]
 include::{snippets}/login-oidc-failure/response-fields.adoc[]
+
+=== 액세스 토큰 갱신
+
+==== 요청
+
+include::{snippets}/token-refresh-success/http-request.adoc[]
+include::{snippets}/token-refresh-success/request-headers.adoc[]
+
+==== 성공 응답
+
+include::{snippets}/token-refresh-success/http-response.adoc[]
+include::{snippets}/token-refresh-success/response-fields.adoc[]
+
+==== 실패 응답 (리프레쉬 토큰 만료)
+
+include::{snippets}/token-refresh-expired/http-response.adoc[]
+include::{snippets}/token-refresh-expired/response-fields.adoc[]
+
+==== 실패 응답 (리프레쉬 토큰 불일치)
+
+include::{snippets}/token-refresh-mismatch/http-response.adoc[]
+include::{snippets}/token-refresh-mismatch/response-fields.adoc[]
+
+==== 실패 응답 (리프레쉬 토큰 없음 또는 토큰 형식 오류)
+
+include::{snippets}/인증_리프레쉬_토큰_갱신_실패_토큰_형식_오류/http-response.adoc[]
+include::{snippets}/인증_리프레쉬_토큰_갱신_실패_토큰_형식_오류/response-fields.adoc[]
 
 === 회원탈퇴
 

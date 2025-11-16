@@ -18,7 +18,7 @@ import side.flab.goforawalk.app.support.util.AuthUtil
 
 private val log = KotlinLogging.logger {}
 
-class RefreshTokenAuthenticationFilter(
+class RefreshTokenAuthenticationFilter constructor(
   private val authenticationManager: AuthenticationManager,
   private val successHandler: AuthenticationSuccessHandler,
   private val failureHandler: AuthenticationFailureHandler,

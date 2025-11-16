@@ -41,8 +41,8 @@ class RefreshTokenFailureHandler(
       )
 
       is MalformedJwtException -> ErrorResponse(
-        code = ApiErrorCode.A_4104,
-        message = exception.message ?: ApiErrorCode.A_4104.defaultMessage
+        code = ApiErrorCode.A_4140,
+        message = exception.message ?: ApiErrorCode.A_4140.defaultMessage
       )
 
       else -> ErrorResponse.authenticationFailed(exception.message ?: "Refresh token authentication failed")

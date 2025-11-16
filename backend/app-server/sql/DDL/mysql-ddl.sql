@@ -41,6 +41,7 @@ create table footstep
 );
 
 
+-- 리프레쉬 토큰
 create table refresh_token
 (
     id         bigint auto_increment primary key,
