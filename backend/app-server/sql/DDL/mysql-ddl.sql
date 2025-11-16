@@ -47,6 +47,9 @@ create table refresh_token
     id         bigint auto_increment primary key,
     user_id    bigint                                    not null,
     token      varchar(512)                              not null,
+    issued_at  timestamp(6) default current_timestamp(6) not null,
+    expired_at timestamp(6)                              not null,
     created_at timestamp(6) default current_timestamp(6) not null,
-    updated_at timestamp(6) default current_timestamp(6) not null
+    updated_at timestamp(6) default current_timestamp(6) not null,
+    unique key uk_user_id (user_id)
 )
