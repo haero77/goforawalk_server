@@ -1,5 +1,6 @@
 package side.flab.goforawalk.app.support
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.restassured.module.mockmvc.RestAssuredMockMvc
@@ -12,6 +13,7 @@ import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock
 import org.springframework.context.ApplicationContext
 import org.springframework.test.web.servlet.MockMvc
 import side.flab.goforawalk.app.auth.OidcLoginTest
+import side.flab.goforawalk.app.support.fixture.AuthFixture
 
 private val log = KotlinLogging.logger {}
 
@@ -24,6 +26,9 @@ private val log = KotlinLogging.logger {}
 abstract class BaseRestAssuredTest : BaseIntegrationTest() {
     @Autowired
     lateinit var mockMvc: MockMvc
+
+    @Autowired
+    lateinit var objectMapper: ObjectMapper
 
     @Autowired
     private lateinit var applicationContext: ApplicationContext

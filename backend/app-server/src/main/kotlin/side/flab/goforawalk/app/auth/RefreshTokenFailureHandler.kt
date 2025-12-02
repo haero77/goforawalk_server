@@ -1,4 +1,4 @@
-package side.flab.goforawalk.app.auth.filter
+package side.flab.goforawalk.app.auth
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -8,6 +8,9 @@ import org.springframework.http.MediaType
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.authentication.AuthenticationFailureHandler
 import org.springframework.stereotype.Component
+import side.flab.goforawalk.app.auth.filter.InvalidRefreshTokenException
+import side.flab.goforawalk.app.auth.filter.MalformedJwtException
+import side.flab.goforawalk.app.auth.filter.RefreshTokenExpiredException
 import side.flab.goforawalk.app.support.error.ApiErrorCode
 import side.flab.goforawalk.app.support.response.ErrorResponse
 import java.nio.charset.StandardCharsets
@@ -15,23 +18,34 @@ import java.nio.charset.StandardCharsets
 private val log = KotlinLogging.logger {}
 
 @Component
-class JwtAuthenticationFailureHandler(
-  private val objectMapper: ObjectMapper,
+class RefreshTokenFailureHandler(
+  private val objectMapper: ObjectMapper
 ) : AuthenticationFailureHandler {
+
   override fun onAuthenticationFailure(
     request: HttpServletRequest,
     response: HttpServletResponse,
-    exception: AuthenticationException,
+    exception: AuthenticationException
   ) {
-    log.warn(exception) { "Jwt Authentication failed: ${exception.message}" }
+    log.warn(exception) { "Refresh token authentication failed: ${exception.message}" }
 
     val errorResponse = when (exception) {
-      is AccessTokenExpiredException -> ErrorResponse(
-        code = ApiErrorCode.A_4101,
+      is RefreshTokenExpiredException -> ErrorResponse(
+        code = ApiErrorCode.A_4102,
         message = exception.message ?: ApiErrorCode.A_4102.defaultMessage
       )
 
-      else -> ErrorResponse.authenticationFailed("Jwt Authentication failed: ${exception.message}")
+      is InvalidRefreshTokenException -> ErrorResponse(
+        code = ApiErrorCode.A_4103,
+        message = exception.message ?: ApiErrorCode.A_4103.defaultMessage
+      )
+
+      is MalformedJwtException -> ErrorResponse(
+        code = ApiErrorCode.A_4140,
+        message = exception.message ?: ApiErrorCode.A_4140.defaultMessage
+      )
+
+      else -> ErrorResponse.authenticationFailed(exception.message ?: "Refresh token authentication failed")
     }
 
     response.status = HttpServletResponse.SC_UNAUTHORIZED

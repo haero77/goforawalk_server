@@ -13,8 +13,5 @@ import side.flab.goforawalk.app.support.BaseRestAssuredTest
 @Import(RestDocsConfiguration::class)
 abstract class DocsTestSupport : BaseRestAssuredTest() {
     @Autowired
-    lateinit var objectMapper: ObjectMapper
-
-    @Autowired
     lateinit var docs: RestDocumentationResultHandler
 }
