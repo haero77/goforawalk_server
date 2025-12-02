@@ -13,7 +13,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.transaction.annotation.Transactional
-import side.flab.goforawalk.app.auth.JwtProperties
 import side.flab.goforawalk.app.auth.refreshtoken.RefreshToken
 import side.flab.goforawalk.app.auth.refreshtoken.RefreshTokenRepository
 import side.flab.goforawalk.app.support.fixture.AuthFixture.Companion.sampleKaKaoIdToken
@@ -27,9 +26,6 @@ class 인증_리프레쉬_토큰_갱신_API : DocsTestSupport() {
 
   @Autowired
   private lateinit var refreshTokenRepository: RefreshTokenRepository
-
-  @Autowired
-  private lateinit var jwtProperties: JwtProperties
 
   @MockitoSpyBean
   private lateinit var clockHolder: ClockHolder

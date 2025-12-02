@@ -1,16 +1,23 @@
 package side.flab.goforawalk.app.support.fixture
 
+import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.security.Keys
 import io.restassured.module.mockmvc.RestAssuredMockMvc.given
 import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification
 import org.springframework.http.HttpHeaders.AUTHORIZATION
 import org.springframework.stereotype.Component
 import side.flab.goforawalk.app.auth.AppAuthTokenProvider
+import side.flab.goforawalk.app.auth.JwtProperties
 import side.flab.goforawalk.app.domain.user.application.AppUserDetails
 import side.flab.goforawalk.app.domain.user.domain.User
+import java.time.Instant
+import java.util.*
+import javax.crypto.SecretKey
 
 @Component
 class AuthFixture(
-  private val authTokenProvider: AppAuthTokenProvider
+  private val authTokenProvider: AppAuthTokenProvider,
+  private val jwtProperties: JwtProperties
 ) {
   companion object {
     const val SAMPLE_KAKAO_ID_TOKEN =
@@ -33,10 +40,28 @@ class AuthFixture(
       .header(AUTHORIZATION, "Bearer $token")
   }
 
+  fun generateExpiredAccessToken(
+    user: User,
+  ): String {
+    val expiredTime = Instant.now().minusSeconds(1) // 1초 전 만료
+
+    return Jwts.builder()
+      .subject(user.id.toString())
+      .issuer(jwtProperties.issuer)
+      .claim("nickname", user.nickname)
+      .issuedAt(Date.from(expiredTime.minusSeconds(jwtProperties.atExpirationSeconds)))
+      .expiration(Date.from(expiredTime))
+      .signWith(toSigningKey(jwtProperties.atSecretKey))
+      .compact()
+  }
+
   private fun generateAT(
     user: User,
   ): String {
     val appAuthToken = authTokenProvider.generate(AppUserDetails(user.id!!, user.nickname))
     return appAuthToken.accessToken
   }
+
+  fun toSigningKey(secretKey: String): SecretKey =
+    Keys.hmacShaKeyFor(secretKey.toByteArray())
 }

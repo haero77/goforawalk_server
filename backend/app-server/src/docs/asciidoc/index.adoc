@@ -48,6 +48,12 @@ include::{snippets}/login-oidc-success/response-fields.adoc[]
 include::{snippets}/login-oidc-failure/http-response.adoc[]
 include::{snippets}/login-oidc-failure/response-fields.adoc[]
 
+=== 인증 오류
+
+==== 실패 응답 (액세스 토큰 만료)
+
+include::{snippets}/인증_액세스토큰_만료/http-response.adoc[]
+
 === 액세스 토큰 갱신
 
 ==== 요청

@@ -1,5 +1,6 @@
 package side.flab.goforawalk.app.support
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.restassured.module.mockmvc.RestAssuredMockMvc
@@ -25,6 +26,9 @@ private val log = KotlinLogging.logger {}
 abstract class BaseRestAssuredTest : BaseIntegrationTest() {
     @Autowired
     lateinit var mockMvc: MockMvc
+
+    @Autowired
+    lateinit var objectMapper: ObjectMapper
 
     @Autowired
     private lateinit var applicationContext: ApplicationContext

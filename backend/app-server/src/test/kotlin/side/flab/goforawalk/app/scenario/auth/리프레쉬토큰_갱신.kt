@@ -10,7 +10,6 @@ import org.mockito.BDDMockito.given
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean
 import org.springframework.transaction.annotation.Transactional
-import side.flab.goforawalk.app.auth.JwtProperties
 import side.flab.goforawalk.app.auth.refreshtoken.RefreshToken
 import side.flab.goforawalk.app.auth.refreshtoken.RefreshTokenRepository
 import side.flab.goforawalk.app.support.BaseRestAssuredTest
@@ -27,9 +26,6 @@ class 리프레쉬_토큰_갱신 : BaseRestAssuredTest() {
 
   @Autowired
   private lateinit var refreshTokenRepository: RefreshTokenRepository
-
-  @Autowired
-  private lateinit var jwtProperties: JwtProperties
 
   @MockitoSpyBean
   private lateinit var clockHolder: ClockHolder
@@ -97,7 +93,7 @@ class 리프레쉬_토큰_갱신 : BaseRestAssuredTest() {
   }
 
   @Test
-  fun `만료된 리프레쉬 토큰으로 갱신 시도 시 401 에러`() {
+  fun `만료된 리프레쉬 토큰으로 갱신 시도 시 401 에러, code=A4102 응답`() {
     val loginInstant = Instant.parse("2025-11-16T00:10:00Z")
     given(clockHolder.now()).willReturn(loginInstant)
 
@@ -129,7 +125,7 @@ class 리프레쉬_토큰_갱신 : BaseRestAssuredTest() {
   }
 
   @Test
-  fun `존재하지 않는 리프레쉬 토큰-으로 갱신 시도 시 401 에러`() {
+  fun `존재하지 않는 리프레쉬 토큰으로 갱신 시도 시 401 에러, code=A4140 응답`() {
     RestAssuredMockMvc.given()
       .log().all()
       .`when`()
