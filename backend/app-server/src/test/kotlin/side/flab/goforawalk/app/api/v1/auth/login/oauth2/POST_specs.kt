@@ -3,19 +3,23 @@ package side.flab.goforawalk.app.api.v1.auth.login.oauth2
 import io.restassured.module.mockmvc.RestAssuredMockMvc.given
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
+import org.mockito.BDDMockito
+import org.mockito.Spy
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean
 import side.flab.goforawalk.app.auth.refreshtoken.RefreshTokenRepository
 import side.flab.goforawalk.app.support.BaseRestAssuredTest
 import side.flab.goforawalk.app.support.fixture.LoginFixture.sampleKakaoIdToken
 import side.flab.goforawalk.app.support.util.ClockHolder
 import side.flab.goforawalk.security.oauth2.OAuth2Provider
 import side.flab.goforawalk.security.oauth2.OidcLoginRequest
+import java.time.Instant
 import kotlin.test.Test
 
 @DisplayName("POST /api/v1/auth/login/oauth2")
 class POST_specs : BaseRestAssuredTest() {
 
-  @Autowired
+  @MockitoSpyBean
   private lateinit var clockHolder: ClockHolder
 
   @Autowired
@@ -58,6 +62,9 @@ class POST_specs : BaseRestAssuredTest() {
     val provider = OAuth2Provider.KAKAO
 
     // Act - 1차 로그인
+    val loginInstant = Instant.parse("2025-11-16T00:10:00Z")
+    BDDMockito.given(clockHolder.now()).willReturn(loginInstant)
+
     val firstLoginResponse = given()
       .log().all()
       .body(loginRequest)
@@ -72,6 +79,8 @@ class POST_specs : BaseRestAssuredTest() {
     val userId = firstLoginResponse.jsonPath().getLong("data.userId")
 
     // Act - 2차 로그인 (동일 사용자)
+    BDDMockito.given(clockHolder.now()).willReturn(loginInstant.plusSeconds(1)) // 서명이 달라지도록 1초 차이 보장
+
     val secondLoginResponse = given()
       .log().all()
       .body(loginRequest)
