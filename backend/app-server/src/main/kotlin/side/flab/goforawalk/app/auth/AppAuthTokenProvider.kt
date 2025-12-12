@@ -15,90 +15,90 @@ import javax.crypto.SecretKey
 
 @Component
 class AppAuthTokenProvider(
-    private val properties: JwtProperties,
-    private val clockHolder: ClockHolder,
-    private val refreshTokenRepository: RefreshTokenRepository
+  private val properties: JwtProperties,
+  private val clockHolder: ClockHolder,
+  private val refreshTokenRepository: RefreshTokenRepository
 ) {
-    @Transactional
-    fun generate(userDetails: AppUserDetails): AppAuthToken {
-        val now = clockHolder.now()
+  @Transactional
+  fun generate(userDetails: AppUserDetails): AppAuthToken {
+    val now = clockHolder.now()
 
-        val accessToken = generateJwt(
-            userDetails,
-            properties.atSecretKey,
-            properties.atExpirationSeconds,
-            now
-        )
-        val refreshToken = generateJwt(
-            userDetails,
-            properties.rtSecretKey,
-            properties.rtExpirationSeconds,
-            now
-        )
+    val accessToken = generateJwt(
+      userDetails,
+      properties.atSecretKey,
+      properties.atExpirationSeconds,
+      now
+    )
+    val refreshToken = generateJwt(
+      userDetails,
+      properties.rtSecretKey,
+      properties.rtExpirationSeconds,
+      now
+    )
 
-        // RefreshToken DB에 저장
-        refreshTokenRepository.deleteByUserId(userDetails.getUserId())
-        val newRefreshToken = RefreshToken(
-            userId = userDetails.getUserId(),
-            token = refreshToken,
-            issuedAt = now,
-            expiredAt = getRefreshTokenExpiresAt(now)
-        )
-        refreshTokenRepository.save(newRefreshToken)
+    // RefreshToken DB에 저장
+    refreshTokenRepository.deleteByUserId(userDetails.getUserId())
+    val newRefreshToken = RefreshToken(
+      userId = userDetails.getUserId(),
+      token = refreshToken,
+      issuedAt = now,
+      expiredAt = getRefreshTokenExpiresAt(now)
+    )
+    refreshTokenRepository.save(newRefreshToken)
 
-        return AppAuthToken(
-            accessToken = accessToken,
-            refreshToken = refreshToken
-        )
-    }
+    return AppAuthToken(
+      accessToken = accessToken,
+      refreshToken = refreshToken
+    )
+  }
 
-    private fun generateJwt(
-        userDetails: AppUserDetails,
-        secretKey: String,
-        expirationSeconds: Long,
-        now: Instant
-    ): String {
-        return Jwts.builder()
-            .subject(userDetails.getUserId().toString())
-            .issuer(properties.issuer)
-            .claim("nickname", userDetails.nickname)
-            .issuedAt(Date.from(now))
-            .expiration(toExpirationSeconds(now, expirationSeconds))
-            .signWith(toSigningKey(secretKey))
-            .compact()
-    }
+  private fun generateJwt(
+    userDetails: AppUserDetails,
+    secretKey: String,
+    expirationSeconds: Long,
+    now: Instant
+  ): String {
+    return Jwts.builder()
+      .subject(userDetails.getUserId().toString())
+      .issuer(properties.issuer)
+      .claim("nickname", userDetails.nickname)
+      .issuedAt(Date.from(now))
+      .expiration(toExpirationSeconds(now, expirationSeconds))
+      .signWith(toSigningKey(secretKey))
+      .compact()
+  }
 
-    fun parseAccessToken(token: String) : UserId {
-        val claims = Jwts.parser()
-            .verifyWith(toSigningKey(properties.atSecretKey))
-            .requireIssuer(properties.issuer)
-            .clock { Date.from(clockHolder.now()) }
-            .build()
-            .parseSignedClaims(token)
-            .payload
+  fun parseAccessToken(token: String): UserId {
+    val claims = Jwts.parser()
+      .verifyWith(toSigningKey(properties.atSecretKey))
+      .requireIssuer(properties.issuer)
+      .clock { Date.from(clockHolder.now()) }
+      .build()
+      .parseSignedClaims(token)
+      .payload
 
-        return UserId(claims.subject.toLong())
-    }
+    return UserId(claims.subject.toLong())
+  }
 
-    fun parseRefreshToken(token: String) : UserId {
-        val claims = Jwts.parser()
-            .verifyWith(toSigningKey(properties.rtSecretKey))
-            .requireIssuer(properties.issuer)
-            .clock { Date.from(clockHolder.now()) }
-            .build()
-            .parseSignedClaims(token)
-            .payload
+  fun parseRefreshToken(token: String): UserId {
+    val claims = Jwts.parser()
+      .verifyWith(toSigningKey(properties.rtSecretKey))
+      .requireIssuer(properties.issuer)
+      .clock { Date.from(clockHolder.now()) }
+      .build()
+      .parseSignedClaims(token)
+      .payload
 
-        return UserId(claims.subject.toLong())
-    }
+    return UserId(claims.subject.toLong())
+  }
 
-    fun getRefreshTokenExpiresAt(issuedAt: Instant): Instant {
-        return issuedAt.plusSeconds(properties.rtExpirationSeconds)
-    }
+  fun getRefreshTokenExpiresAt(issuedAt: Instant): Instant {
+    return issuedAt.plusSeconds(properties.rtExpirationSeconds)
+  }
 
-    private fun toSigningKey(secretKey: String): SecretKey =
-        Keys.hmacShaKeyFor(secretKey.toByteArray())
+  private fun toSigningKey(secretKey: String): SecretKey =
+    Keys.hmacShaKeyFor(secretKey.toByteArray())
 
-    private fun toExpirationSeconds(now: Instant, expirationSeconds: Long): Date =
-        Date.from(now.plusSeconds(expirationSeconds))
+  private fun toExpirationSeconds(now: Instant, expirationSeconds: Long): Date =
+    Date.from(now.plusSeconds(expirationSeconds))
 }
