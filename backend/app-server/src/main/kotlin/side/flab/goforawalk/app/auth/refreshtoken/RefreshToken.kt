@@ -5,12 +5,14 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.Table
 import side.flab.goforawalk.app.support.base.BaseEntityWithoutActiveStatus
 import java.time.Instant
 
 @Entity
+@Table(name = "refresh_token")
 class RefreshToken(
-  @Column(name = "user_id", nullable = false, updatable = false)
+  @Column(name = "user_id", unique = true, nullable = false, updatable = false)
   val userId: Long,
 
   @Column(name= "token", updatable = false, length = 512)
