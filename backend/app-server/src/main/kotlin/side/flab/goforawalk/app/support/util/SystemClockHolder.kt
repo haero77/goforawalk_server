@@ -8,21 +8,21 @@ import java.time.ZonedDateTime
 
 @Component
 class SystemClockHolder : ClockHolder {
-    companion object {
-        val SEOUL_ZONE_ID: ZoneId = ZoneId.of("Asia/Seoul")
+  companion object {
+    val SEOUL_ZONE_ID: ZoneId = ZoneId.of("Asia/Seoul")
 
-        fun toSeoulZonedDateTime(instant: Instant): ZonedDateTime {
-            return instant.atZone(SEOUL_ZONE_ID)
-        }
+    fun toSeoulZonedDateTime(instant: Instant): ZonedDateTime {
+      return instant.atZone(SEOUL_ZONE_ID)
     }
+  }
 
-    override fun now(): Instant {
-        return getInstant()
-    }
+  override fun now(): Instant {
+    return getInstant()
+  }
 
-    override fun localDate(zoneId: ZoneId): LocalDate {
-        return getInstant().atZone(zoneId).toLocalDate()
-    }
+  override fun localDate(zoneId: ZoneId): LocalDate {
+    return getInstant().atZone(zoneId).toLocalDate()
+  }
 
-    private fun getInstant(): Instant = Instant.now()
+  private fun getInstant(): Instant = Instant.now()
 }

@@ -8,8 +8,8 @@ import side.flab.goforawalk.security.oauth2.validator.OidcIdTokenValidatorConfig
 @Target(AnnotationTarget.CLASS)
 @EnableWebSecurity
 @Import(
-    OidcSecurityConfig::class,
-    OidcIdTokenDecoderConfig::class,
-    OidcIdTokenValidatorConfig::class,
+  OidcSecurityConfig::class,
+  OidcIdTokenDecoderConfig::class,
+  OidcIdTokenValidatorConfig::class,
 )
 annotation class EnableOAuth2OidcConfiguration

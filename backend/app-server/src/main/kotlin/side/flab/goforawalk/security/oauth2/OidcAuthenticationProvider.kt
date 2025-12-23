@@ -11,39 +11,39 @@ import side.flab.goforawalk.security.oauth2.validator.OidcIdTokenValidatorFactor
 private val log = KotlinLogging.logger {}
 
 class OidcAuthenticationProvider(
-    private val idTokenValidatorFactory: OidcIdTokenValidatorFactory,
-    private val userService: OidcUserService,
+  private val idTokenValidatorFactory: OidcIdTokenValidatorFactory,
+  private val userService: OidcUserService,
 ) : AuthenticationProvider {
 
-    override fun supports(authentication: Class<*>) =
-        OidcAuthenticationToken::class.java.isAssignableFrom(authentication)
+  override fun supports(authentication: Class<*>) =
+    OidcAuthenticationToken::class.java.isAssignableFrom(authentication)
 
-    override fun authenticate(authentication: Authentication): Authentication {
-        val token = authentication as OidcAuthenticationToken
+  override fun authenticate(authentication: Authentication): Authentication {
+    val token = authentication as OidcAuthenticationToken
 
-        try {
-            val validatedIdToken = validateIdToken(token)
-            val userInfo = OidcUserInfo(
-                provider = token.provider,
-                providerUsername = validatedIdToken.claims["sub"] as String,
-                email = validatedIdToken.claims["email"] as String?,
-            )
-            val userDetails = userService.loadUser(userInfo)
+    try {
+      val validatedIdToken = validateIdToken(token)
+      val userInfo = OidcUserInfo(
+        provider = token.provider,
+        providerUsername = validatedIdToken.claims["sub"] as String,
+        email = validatedIdToken.claims["email"] as String?,
+      )
+      val userDetails = userService.loadUser(userInfo)
 
-            return UsernamePasswordAuthenticationToken.authenticated(
-                userDetails,
-                null,
-                emptyList()
-            )
-        } catch (e: RuntimeException) {
-            throw BadCredentialsException("Failed to validate id token: ${e.message}", e)
-        }
+      return UsernamePasswordAuthenticationToken.authenticated(
+        userDetails,
+        null,
+        emptyList()
+      )
+    } catch (e: RuntimeException) {
+      throw BadCredentialsException("Failed to validate id token: ${e.message}", e)
     }
+  }
 
-    private fun validateIdToken(token: OidcAuthenticationToken): Jwt {
-        val idTokenValidator = idTokenValidatorFactory.getValidatorBy(token.provider)
-        val validatedIdToken = idTokenValidator.validate(token)
-        log.info { "${token.provider} id token validated: ${validatedIdToken.headers} ${validatedIdToken.claims}" }
-        return validatedIdToken
-    }
+  private fun validateIdToken(token: OidcAuthenticationToken): Jwt {
+    val idTokenValidator = idTokenValidatorFactory.getValidatorBy(token.provider)
+    val validatedIdToken = idTokenValidator.validate(token)
+    log.info { "${token.provider} id token validated: ${validatedIdToken.headers} ${validatedIdToken.claims}" }
+    return validatedIdToken
+  }
 }

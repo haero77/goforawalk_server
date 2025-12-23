@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping
 @Controller
 class ApiDocsController {
 
-    /**
-     * API 문서 인덱스 페이지로 리다이렉트
-     */
-    @GetMapping("/docs")
-    fun getDocs(): String {
-        return "redirect:/docs/index.html"
-    }
+  /**
+   * API 문서 인덱스 페이지로 리다이렉트
+   */
+  @GetMapping("/docs")
+  fun getDocs(): String {
+    return "redirect:/docs/index.html"
+  }
 }

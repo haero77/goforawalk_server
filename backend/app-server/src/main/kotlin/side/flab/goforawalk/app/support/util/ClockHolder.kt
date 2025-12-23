@@ -5,7 +5,7 @@ import java.time.LocalDate
 import java.time.ZoneId
 
 interface ClockHolder {
-    fun now(): Instant
+  fun now(): Instant
 
-    fun localDate(zoneId: ZoneId): LocalDate
+  fun localDate(zoneId: ZoneId): LocalDate
 }

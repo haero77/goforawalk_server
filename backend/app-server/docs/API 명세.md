@@ -4,7 +4,9 @@
 * [공통 요청 헤더](#공통-요청-헤더)
 * [인증](#인증-)
   * [로그인](#로그인)
-  * [토큰 갱신](#토큰-갱신)
+  * [인증 토큰](#인증-토큰)
+    * [액세스 토큰 만료](#액세스-토큰-만료)
+    * [액세스 토큰 갱신](#액세스-토큰-갱신)
 * [프로필](#프로필)
   * [프로필 조회](#프로필-조회)
   * [프로필 수정](#프로필-수정)
@@ -12,6 +14,8 @@
   * [발자취 조회](#발자취-조회)
   * [발자취 생성](#발자취-생성)
   * [발자취 삭제](#발자취-삭제)
+* [기록](#기록-)
+  * [발자취 캘린더 조회](#발자취-캘린더-조회-)
 <!-- TOC -->
 
 ---
@@ -251,3 +255,40 @@ Multipart Form Data {
 - [ ] 올바르게[요청]하면 200 OK 상태 코드를 반환한다.
 - [ ] 인증 토큰이 유효하지 않을 경우 401 Unauthorized 상태 코드를 반환한다.
 - [ ] 다른 유저의 발자취를 삭제하려고 하면 403 Forbidden 상태 코드를 반환한다.
+
+# 기록 
+
+## 발자취 캘린더 조회 
+
+- 엔드포인트: GET /api/v1/footsteps/calendar
+- 요청 예시: GET /api/v1/footsteps/calendar?startDate=2026-01-01&endDate=2026-01-31
+  - startDate: 조회 시작 날짜 (YYYY-MM-DD), required
+  - endDate: 조회 종료 날짜 (YYYY-MM-DD), required
+- 응답
+
+```json
+{
+  "data": {
+    "footsteps": [
+      {
+        "userId": 4,
+        "userNickname": "산책왕",
+        "footstepId": 5,
+        "date": "2026-01-01",
+        "imageUrl": "https://example.com/image.jpg",
+        "content": "오늘의 산책은 정말 좋았어요!",
+        "createdAt": "2025-12-12T20:28:42.460986+09:00"
+      },
+      {
+        "userId": 4,
+        "userNickname": "산책왕",
+        "footstepId": 4,
+        "date": "2026-01-31",
+        "imageUrl": "https://example.com/image.jpg",
+        "content": "오늘의 산책은 정말 좋았어요!",
+        "createdAt": "2025-12-12T20:28:42.460006+09:00"
+      }
+    ]
+  }
+}
+```

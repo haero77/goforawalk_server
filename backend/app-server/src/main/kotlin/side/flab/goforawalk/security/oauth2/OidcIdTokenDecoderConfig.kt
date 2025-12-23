@@ -20,76 +20,76 @@ import java.util.concurrent.TimeUnit
 
 @Configuration
 class OidcIdTokenDecoderConfig {
-    companion object {
-        const val JWK_SET_CACHE = "jwkSetCache"
-        const val KAKAO_ID_TOKEN_DECODER_BEAN_NAME = "kakaoIdTokenDecoder"
-        const val APPLE_ID_TOKEN_DECODER_BEAN_NAME = "appleIdTokenDecoder"
-    }
+  companion object {
+    const val JWK_SET_CACHE = "jwkSetCache"
+    const val KAKAO_ID_TOKEN_DECODER_BEAN_NAME = "kakaoIdTokenDecoder"
+    const val APPLE_ID_TOKEN_DECODER_BEAN_NAME = "appleIdTokenDecoder"
+  }
 
-    @Bean
-    fun cacheManager(): CacheManager {
-        val caches = listOf(
-            CaffeineCache(
-                JWK_SET_CACHE, Caffeine.newBuilder()
-                    .expireAfterWrite(72, TimeUnit.HOURS) // 72시간 후 만료
-                    .maximumSize(2) // 제공자가 2개(KAKAO, APPLE) 이므로 2개로 설정
-                    .build()
-            )
-        )
+  @Bean
+  fun cacheManager(): CacheManager {
+    val caches = listOf(
+      CaffeineCache(
+        JWK_SET_CACHE, Caffeine.newBuilder()
+          .expireAfterWrite(72, TimeUnit.HOURS) // 72시간 후 만료
+          .maximumSize(2) // 제공자가 2개(KAKAO, APPLE) 이므로 2개로 설정
+          .build()
+      )
+    )
 
-        val cacheManager = SimpleCacheManager()
-        cacheManager.setCaches(caches)
-        return cacheManager
-    }
+    val cacheManager = SimpleCacheManager()
+    cacheManager.setCaches(caches)
+    return cacheManager
+  }
 
-    @Bean
-    fun jwkSetCache(cacheManager: CacheManager): Cache {
-        return cacheManager.getCache(JWK_SET_CACHE)
-            ?: throw IllegalStateException("$JWK_SET_CACHE cache is not configured.")
-    }
+  @Bean
+  fun jwkSetCache(cacheManager: CacheManager): Cache {
+    return cacheManager.getCache(JWK_SET_CACHE)
+      ?: throw IllegalStateException("$JWK_SET_CACHE cache is not configured.")
+  }
 
-    /**
-     * @see <a href="https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#oidc-find-public-key">Kakao JWK Set URL</a>
-     */
-    @Bean(name = [KAKAO_ID_TOKEN_DECODER_BEAN_NAME])
-    fun kakaoIdTokenDecoder(
-        @Qualifier(JWK_SET_CACHE) jwkSetCache: Cache,
-        clientRegistrationRepository: ClientRegistrationRepository,
-    ): JwtDecoder {
-        val kakaoRegistration = clientRegistrationRepository.findByRegistrationId(KAKAO.provider)
-            ?: throw BeanInitializationException("ClientRegistration for provider $KAKAO not found")
-        val jwkSetUri = (kakaoRegistration.providerDetails.jwkSetUri
-            ?: throw BeanInitializationException("provider $KAKAO jwk-set-uri not found"))
+  /**
+   * @see <a href="https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#oidc-find-public-key">Kakao JWK Set URL</a>
+   */
+  @Bean(name = [KAKAO_ID_TOKEN_DECODER_BEAN_NAME])
+  fun kakaoIdTokenDecoder(
+    @Qualifier(JWK_SET_CACHE) jwkSetCache: Cache,
+    clientRegistrationRepository: ClientRegistrationRepository,
+  ): JwtDecoder {
+    val kakaoRegistration = clientRegistrationRepository.findByRegistrationId(KAKAO.provider)
+      ?: throw BeanInitializationException("ClientRegistration for provider $KAKAO not found")
+    val jwkSetUri = (kakaoRegistration.providerDetails.jwkSetUri
+      ?: throw BeanInitializationException("provider $KAKAO jwk-set-uri not found"))
 
-        val kakaoIdTokenDecoder = NimbusJwtDecoder
-            .withJwkSetUri(jwkSetUri) // issuer-uri 세팅 시 jwk-set-uri 세팅을 위한 issuer-uri 호출 발생
-            .jwsAlgorithm(SignatureAlgorithm.RS256) // 미지정 시 JWKSource 업데이트를 위한 API jwk-set-uri 호출 발생
-            .cache(jwkSetCache)
-            .build()
-        kakaoIdTokenDecoder.setJwtValidator(OidcIdTokenValidator(kakaoRegistration))
+    val kakaoIdTokenDecoder = NimbusJwtDecoder
+      .withJwkSetUri(jwkSetUri) // issuer-uri 세팅 시 jwk-set-uri 세팅을 위한 issuer-uri 호출 발생
+      .jwsAlgorithm(SignatureAlgorithm.RS256) // 미지정 시 JWKSource 업데이트를 위한 API jwk-set-uri 호출 발생
+      .cache(jwkSetCache)
+      .build()
+    kakaoIdTokenDecoder.setJwtValidator(OidcIdTokenValidator(kakaoRegistration))
 
-        return kakaoIdTokenDecoder
-    }
+    return kakaoIdTokenDecoder
+  }
 
-    @Bean(name = [APPLE_ID_TOKEN_DECODER_BEAN_NAME])
-    fun appleIdTokenDecoder(
-        @Qualifier(JWK_SET_CACHE) jwkSetCache: Cache,
-        clientRegistrationRepository: ClientRegistrationRepository,
-    ): JwtDecoder {
-        val appleRegistration =
-            clientRegistrationRepository.findByRegistrationId(APPLE.provider)
-                ?: throw BeanInitializationException("ClientRegistration for provider $APPLE not found")
+  @Bean(name = [APPLE_ID_TOKEN_DECODER_BEAN_NAME])
+  fun appleIdTokenDecoder(
+    @Qualifier(JWK_SET_CACHE) jwkSetCache: Cache,
+    clientRegistrationRepository: ClientRegistrationRepository,
+  ): JwtDecoder {
+    val appleRegistration =
+      clientRegistrationRepository.findByRegistrationId(APPLE.provider)
+        ?: throw BeanInitializationException("ClientRegistration for provider $APPLE not found")
 
-        val jwkSetUri = (appleRegistration.providerDetails.jwkSetUri
-            ?: throw BeanInitializationException("provider $APPLE jwk-set-uri not found"))
+    val jwkSetUri = (appleRegistration.providerDetails.jwkSetUri
+      ?: throw BeanInitializationException("provider $APPLE jwk-set-uri not found"))
 
-        val appleIdTokenDecoder = NimbusJwtDecoder
-            .withJwkSetUri(jwkSetUri) // issuer-uri 세팅 시 jwk-set-uri 세팅을 위한 issuer-uri 호출 발생
-            .jwsAlgorithm(SignatureAlgorithm.RS256) // 미지정 시 JWKSource 업데이트를 위한 API jwk-set-uri 호출 발생
-            .cache(jwkSetCache)
-            .build()
-        appleIdTokenDecoder.setJwtValidator(OidcIdTokenValidator(appleRegistration))
+    val appleIdTokenDecoder = NimbusJwtDecoder
+      .withJwkSetUri(jwkSetUri) // issuer-uri 세팅 시 jwk-set-uri 세팅을 위한 issuer-uri 호출 발생
+      .jwsAlgorithm(SignatureAlgorithm.RS256) // 미지정 시 JWKSource 업데이트를 위한 API jwk-set-uri 호출 발생
+      .cache(jwkSetCache)
+      .build()
+    appleIdTokenDecoder.setJwtValidator(OidcIdTokenValidator(appleRegistration))
 
-        return appleIdTokenDecoder
-    }
+    return appleIdTokenDecoder
+  }
 }

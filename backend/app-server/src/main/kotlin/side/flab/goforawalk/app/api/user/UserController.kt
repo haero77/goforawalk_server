@@ -14,22 +14,22 @@ import side.flab.goforawalk.app.support.web.CurrentUserId
 
 @RestController
 class UserController(
-    private val userDeleteService: UserDeleteService,
-    private val profileUpdateService: ProfileUpdateService
+  private val userDeleteService: UserDeleteService,
+  private val profileUpdateService: ProfileUpdateService
 ) : BaseApiController() {
 
-    @DeleteMapping("/v1/users/me")
-    fun deleteUser(@CurrentUserId userId: Long): ResponseEntity<Void> {
-        userDeleteService.delete(userId)
-        return ResponseEntity.ok().build()
-    }
+  @DeleteMapping("/v1/users/me")
+  fun deleteUser(@CurrentUserId userId: Long): ResponseEntity<Void> {
+    userDeleteService.delete(userId)
+    return ResponseEntity.ok().build()
+  }
 
-    @PatchMapping("/v1/users/me/nickname")
-    fun updateProfile(
-        @CurrentUserId userId: Long,
-        @RequestBody @Valid request: UserNicknameUpdateRequest
-    ): ResponseEntity<Void> {
-        profileUpdateService.updateNickname(userId, request)
-        return ResponseEntity.noContent().build()
-    }
+  @PatchMapping("/v1/users/me/nickname")
+  fun updateProfile(
+    @CurrentUserId userId: Long,
+    @RequestBody @Valid request: UserNicknameUpdateRequest
+  ): ResponseEntity<Void> {
+    profileUpdateService.updateNickname(userId, request)
+    return ResponseEntity.noContent().build()
+  }
 }

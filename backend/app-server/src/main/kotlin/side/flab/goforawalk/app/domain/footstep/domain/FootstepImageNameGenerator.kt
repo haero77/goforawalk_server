@@ -5,7 +5,7 @@ import java.util.*
 
 @Component
 class FootstepImageNameGenerator {
-    fun generate(userId: Long): String {
-        return "images/footsteps/$userId/${UUID.randomUUID()}"
-    }
+  fun generate(userId: Long): String {
+    return "images/footsteps/$userId/${UUID.randomUUID()}"
+  }
 }

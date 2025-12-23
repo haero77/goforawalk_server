@@ -11,20 +11,20 @@ import side.flab.goforawalk.app.auth.filter.JwtAuthenticationToken
 
 @Component
 class CurrentUserIdArgumentResolver : HandlerMethodArgumentResolver {
-    override fun supportsParameter(parameter: MethodParameter): Boolean {
-        return parameter.hasParameterAnnotation(CurrentUserId::class.java) &&
-                parameter.parameterType == Long::class.java
-    }
+  override fun supportsParameter(parameter: MethodParameter): Boolean {
+    return parameter.hasParameterAnnotation(CurrentUserId::class.java) &&
+        parameter.parameterType == Long::class.java
+  }
 
-    override fun resolveArgument(
-        parameter: MethodParameter,
-        mavContainer: ModelAndViewContainer?,
-        webRequest: NativeWebRequest,
-        binderFactory: WebDataBinderFactory?,
-    ): Long {
-        return when (val authentication = SecurityContextHolder.getContext().authentication) {
-            is JwtAuthenticationToken -> authentication.principal.value
-            else -> throw IllegalArgumentException("Current user ID is not available in the security context(authentication is not JwtAuthenticationToken)")
-        }
+  override fun resolveArgument(
+    parameter: MethodParameter,
+    mavContainer: ModelAndViewContainer?,
+    webRequest: NativeWebRequest,
+    binderFactory: WebDataBinderFactory?,
+  ): Long {
+    return when (val authentication = SecurityContextHolder.getContext().authentication) {
+      is JwtAuthenticationToken -> authentication.principal.value
+      else -> throw IllegalArgumentException("Current user ID is not available in the security context(authentication is not JwtAuthenticationToken)")
     }
+  }
 }

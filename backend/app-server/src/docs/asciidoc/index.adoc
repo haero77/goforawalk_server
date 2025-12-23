@@ -176,3 +176,17 @@ include::{snippets}/footstep-today-availability-can-create/response-fields.adoc[
 
 include::{snippets}/footstep-today-availability-cannot-create/http-response.adoc[]
 include::{snippets}/footstep-today-availability-cannot-create/response-fields.adoc[]
+
+== 기록
+
+=== 발자취 캘린더 조회
+
+==== 요청
+
+include::{snippets}/기록-발자취-캘린더/http-request.adoc[]
+include::{snippets}/기록-발자취-캘린더/query-parameters.adoc[]
+
+==== 성공 응답
+
+include::{snippets}/기록-발자취-캘린더/http-response.adoc[]
+include::{snippets}/기록-발자취-캘린더/response-fields.adoc[]

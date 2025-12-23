@@ -7,11 +7,11 @@ import side.flab.goforawalk.app.domain.user.domain.UserReader
 
 @Service
 class ProfileUpdateService(
-    private val userReader: UserReader,
+  private val userReader: UserReader,
 ) {
-    @Transactional
-    fun updateNickname(userId: Long, request: UserNicknameUpdateRequest) {
-        val user = userReader.getById(userId)
-        user.updateNickname(request.nickname)
-    }
+  @Transactional
+  fun updateNickname(userId: Long, request: UserNicknameUpdateRequest) {
+    val user = userReader.getById(userId)
+    user.updateNickname(request.nickname)
+  }
 }

@@ -6,10 +6,10 @@ import side.flab.goforawalk.security.oauth2.OAuth2Provider
 import side.flab.goforawalk.security.oauth2.OidcAuthenticationToken
 
 class KakaoIdTokenValidator(
-    private val idTokenDecoder: JwtDecoder,
+  private val idTokenDecoder: JwtDecoder,
 ) : OidcIdTokenValidator {
-    override fun supports(): OAuth2Provider = OAuth2Provider.KAKAO
+  override fun supports(): OAuth2Provider = OAuth2Provider.KAKAO
 
-    override fun validate(authentication: OidcAuthenticationToken): Jwt =
-        idTokenDecoder.decode(authentication.idToken.value)
+  override fun validate(authentication: OidcAuthenticationToken): Jwt =
+    idTokenDecoder.decode(authentication.idToken.value)
 }
