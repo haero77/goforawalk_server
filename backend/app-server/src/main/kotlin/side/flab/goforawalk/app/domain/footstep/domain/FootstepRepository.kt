@@ -36,6 +36,15 @@ interface FootstepRepository : JpaRepository<Footstep, Long> {
         select fs 
         from Footstep fs
             join fetch fs.user u
+        where fs.user.id = :userId and fs.date between :startDate and :endDate"""
+  )
+  fun findAllByUserIdAndDateBetween(userId: Long, startDate: LocalDate, endDate: LocalDate): List<Footstep>
+
+  @Query(
+    """
+        select fs 
+        from Footstep fs
+            join fetch fs.user u
         where fs.user.id = :userId and fs.date = :date"""
     )
     fun findByUserIdAndDate(userId: Long, date: LocalDate): Footstep?
