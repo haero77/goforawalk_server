@@ -5,9 +5,9 @@ import jakarta.persistence.*
 @Entity
 @Table(name = "sample")
 class SampleEntity(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null,
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  var id: Long? = null,
 
-    var name: String,
+  var name: String,
 )

@@ -5,7 +5,7 @@ import side.flab.goforawalk.security.oauth2.OAuth2Provider
 import side.flab.goforawalk.security.oauth2.OidcAuthenticationToken
 
 interface OidcIdTokenValidator {
-    fun supports(): OAuth2Provider
+  fun supports(): OAuth2Provider
 
-    fun validate(authentication: OidcAuthenticationToken): Jwt
+  fun validate(authentication: OidcAuthenticationToken): Jwt
 }

@@ -10,8 +10,8 @@ import java.util.*
 @Configuration
 @EnableJpaAuditing(dateTimeProviderRef = "auditDateTimeProvider") // 커스텀 Provider 지정
 class JpaAuditingConfig {
-    @Bean
-    fun auditDateTimeProvider(clockHolder: ClockHolder): DateTimeProvider {
-        return DateTimeProvider { Optional.of(clockHolder.now()) }
-    }
+  @Bean
+  fun auditDateTimeProvider(clockHolder: ClockHolder): DateTimeProvider {
+    return DateTimeProvider { Optional.of(clockHolder.now()) }
+  }
 }

@@ -1,11 +1,6 @@
 package side.flab.goforawalk.app.auth.refreshtoken
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import side.flab.goforawalk.app.support.base.BaseEntityWithoutActiveStatus
 import java.time.Instant
 
@@ -15,7 +10,7 @@ class RefreshToken(
   @Column(name = "user_id", unique = true, nullable = false, updatable = false)
   val userId: Long,
 
-  @Column(name= "token", updatable = false, length = 512)
+  @Column(name = "token", updatable = false, length = 512)
   val token: String,
 
   @Column(name = "issued_at", nullable = false, updatable = false)

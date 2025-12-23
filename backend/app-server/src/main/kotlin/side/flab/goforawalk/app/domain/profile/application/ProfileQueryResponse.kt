@@ -5,13 +5,13 @@ import side.flab.goforawalk.app.support.serializer.UserShortNicknameSerializer
 import side.flab.goforawalk.security.oauth2.OAuth2Provider
 
 data class ProfileQueryResponse(
-    val userId: Long,
+  val userId: Long,
 
-    @JsonSerialize(using = UserShortNicknameSerializer::class)
-    val userNickname: String,
-    val userEmail: String?,
+  @JsonSerialize(using = UserShortNicknameSerializer::class)
+  val userNickname: String,
+  val userEmail: String?,
 
-    val userProvider: OAuth2Provider,
-    val totalFootstepCount: Long,
-    val footstepStreakDays: Long,
+  val userProvider: OAuth2Provider,
+  val totalFootstepCount: Long,
+  val footstepStreakDays: Long,
 )

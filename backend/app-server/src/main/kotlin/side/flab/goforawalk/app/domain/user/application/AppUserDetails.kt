@@ -3,11 +3,11 @@ package side.flab.goforawalk.app.domain.user.application
 import side.flab.goforawalk.security.UserDetails
 
 data class AppUserDetails(
-    private val _userId: Long,
-    val nickname: String,
-    val email: String? = null,
+  private val _userId: Long,
+  val nickname: String,
+  val email: String? = null,
 ) : UserDetails {
-    override fun getUserId(): Long {
-        return _userId
-    }
+  override fun getUserId(): Long {
+    return _userId
+  }
 }

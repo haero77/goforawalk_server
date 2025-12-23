@@ -12,30 +12,30 @@ private val log = KotlinLogging.logger {}
 
 @Service
 class UserSignUpService(
-    private val userRepository: UserRepository,
+  private val userRepository: UserRepository,
 ) : OidcUserService {
-    override fun loadUser(userInfo: OidcUserInfo): UserDetails {
-        val user = userRepository.findByProviderAndProviderUsername(
-            userInfo.provider,
-            userInfo.providerUsername
-        ) ?: createUser(userInfo)
+  override fun loadUser(userInfo: OidcUserInfo): UserDetails {
+    val user = userRepository.findByProviderAndProviderUsername(
+      userInfo.provider,
+      userInfo.providerUsername
+    ) ?: createUser(userInfo)
 
-        return AppUserDetails(
-            _userId = user.id!!,
-            nickname = user.nickname,
-            email = user.email
-        )
-    }
+    return AppUserDetails(
+      _userId = user.id!!,
+      nickname = user.nickname,
+      email = user.email
+    )
+  }
 
-    private fun createUser(userInfo: OidcUserInfo): User {
-        val user = User.of(
-            provider = userInfo.provider,
-            providerUsername = userInfo.providerUsername,
-            email = userInfo.email,
-        )
+  private fun createUser(userInfo: OidcUserInfo): User {
+    val user = User.of(
+      provider = userInfo.provider,
+      providerUsername = userInfo.providerUsername,
+      email = userInfo.email,
+    )
 
-        val newUser = userRepository.save(user)
-        log.info { "New user created!! $newUser" }
-        return newUser
-    }
+    val newUser = userRepository.save(user)
+    log.info { "New user created!! $newUser" }
+    return newUser
+  }
 }

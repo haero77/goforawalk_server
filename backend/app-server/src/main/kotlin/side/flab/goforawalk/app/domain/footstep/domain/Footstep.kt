@@ -20,32 +20,32 @@ import java.time.LocalDate
 //)
 @SQLRestriction(BaseEntity.SOFT_DELETE_RESTRICTION)
 class Footstep constructor(
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false, updatable = false)
-    val user: User,
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id", nullable = false, updatable = false)
+  val user: User,
 
-    @Column(name = "issue_date", nullable = false, updatable = false)
-    val date: LocalDate,
+  @Column(name = "issue_date", nullable = false, updatable = false)
+  val date: LocalDate,
 
-    @Column(name = "image_url", length = 255, nullable = false, updatable = false)
-    val imageUrl: String,
+  @Column(name = "image_url", length = 255, nullable = false, updatable = false)
+  val imageUrl: String,
 
-    @Column(name = "content", length = 50)
-    var content: String? = null
+  @Column(name = "content", length = 50)
+  var content: String? = null
 ) : BaseEntity() {
-    companion object {
-        fun of(
-            user: User,
-            clockHolder: ClockHolder,
-            imageUrl: String,
-            content: String? = null
-        ): Footstep {
-            return Footstep(
-                user = user,
-                date = user.getLocalDate(clockHolder),
-                imageUrl = imageUrl,
-                content = content
-            )
-        }
+  companion object {
+    fun of(
+      user: User,
+      clockHolder: ClockHolder,
+      imageUrl: String,
+      content: String? = null
+    ): Footstep {
+      return Footstep(
+        user = user,
+        date = user.getLocalDate(clockHolder),
+        imageUrl = imageUrl,
+        content = content
+      )
     }
+  }
 }

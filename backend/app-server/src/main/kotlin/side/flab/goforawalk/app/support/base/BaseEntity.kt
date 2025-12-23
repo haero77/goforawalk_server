@@ -11,43 +11,43 @@ import java.time.OffsetDateTime
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
 abstract class BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  val id: Long? = null
 
-    @CreatedDate
-    @Column(name = "created_at", nullable = false, updatable = false)
-    var createdAt: Instant? = null
+  @CreatedDate
+  @Column(name = "created_at", nullable = false, updatable = false)
+  var createdAt: Instant? = null
 
-    @LastModifiedDate
-    @Column(name = "updated_at", nullable = false)
-    var updatedAt: Instant? = null
+  @LastModifiedDate
+  @Column(name = "updated_at", nullable = false)
+  var updatedAt: Instant? = null
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "entity_status", nullable = false, length = 10)
-    private var entityStatus: EntityStatus = EntityStatus.ACTIVE
+  @Enumerated(EnumType.STRING)
+  @Column(name = "entity_status", nullable = false, length = 10)
+  private var entityStatus: EntityStatus = EntityStatus.ACTIVE
 
-    fun active() {
-        entityStatus = EntityStatus.ACTIVE
-    }
+  fun active() {
+    entityStatus = EntityStatus.ACTIVE
+  }
 
-    fun delete() {
-        entityStatus = EntityStatus.DELETED
-    }
+  fun delete() {
+    entityStatus = EntityStatus.DELETED
+  }
 
-    fun isActive(): Boolean {
-        return entityStatus == EntityStatus.ACTIVE
-    }
+  fun isActive(): Boolean {
+    return entityStatus == EntityStatus.ACTIVE
+  }
 
-    fun isDeleted(): Boolean {
-        return entityStatus == EntityStatus.DELETED
-    }
+  fun isDeleted(): Boolean {
+    return entityStatus == EntityStatus.DELETED
+  }
 
-    fun createdAtAsSeoulOffset(): OffsetDateTime {
-        return SystemClockHolder.toSeoulZonedDateTime(createdAt!!).toOffsetDateTime()
-    }
+  fun createdAtAsSeoulOffset(): OffsetDateTime {
+    return SystemClockHolder.toSeoulZonedDateTime(createdAt!!).toOffsetDateTime()
+  }
 
-    companion object {
-        const val SOFT_DELETE_RESTRICTION = "entity_status <> 'DELETED'"
-    }
+  companion object {
+    const val SOFT_DELETE_RESTRICTION = "entity_status <> 'DELETED'"
+  }
 }

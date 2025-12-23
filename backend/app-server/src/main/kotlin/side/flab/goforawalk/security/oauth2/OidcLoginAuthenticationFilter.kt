@@ -19,54 +19,54 @@ import org.springframework.web.filter.OncePerRequestFilter
 private val log = KotlinLogging.logger {}
 
 class OidcLoginAuthenticationFilter constructor(
-    private val objectMapper: ObjectMapper,
-    private val authenticationManager: AuthenticationManager,
-    private val successHandler: AuthenticationSuccessHandler,
-    private val failureHandler: AuthenticationFailureHandler,
+  private val objectMapper: ObjectMapper,
+  private val authenticationManager: AuthenticationManager,
+  private val successHandler: AuthenticationSuccessHandler,
+  private val failureHandler: AuthenticationFailureHandler,
 ) : OncePerRequestFilter() {
 
-    companion object {
-        const val OIDC_LOGIN_PATH_PATTERN = "/api/v1/auth/login/oauth2/**" // todo: 앱에서 path 주입 (현재는 시큐리티에서 직접 정의)
+  companion object {
+    const val OIDC_LOGIN_PATH_PATTERN = "/api/v1/auth/login/oauth2/**" // todo: 앱에서 path 주입 (현재는 시큐리티에서 직접 정의)
+  }
+
+  private val requestMatcher: RequestMatcher = AntPathRequestMatcher(OIDC_LOGIN_PATH_PATTERN, HttpMethod.POST.name())
+
+  override fun doFilterInternal(
+    request: HttpServletRequest,
+    response: HttpServletResponse,
+    filterChain: FilterChain,
+  ) {
+    if (!requestMatcher.matches(request)) { // todo shouldNotFilter로 리팩토링
+      filterChain.doFilter(request, response)
+      return
     }
 
-    private val requestMatcher: RequestMatcher = AntPathRequestMatcher(OIDC_LOGIN_PATH_PATTERN, HttpMethod.POST.name())
-
-    override fun doFilterInternal(
-        request: HttpServletRequest,
-        response: HttpServletResponse,
-        filterChain: FilterChain,
-    ) {
-        if (!requestMatcher.matches(request)) { // todo shouldNotFilter로 리팩토링
-            filterChain.doFilter(request, response)
-            return
-        }
-
-        try {
-            val authResult = attemptAuthentication(request)
-            if (authResult.isAuthenticated) {
-                successHandler.onAuthenticationSuccess(request, response, authResult)
-            }
-        } catch (e: AuthenticationException) {
-            SecurityContextHolder.clearContext()
-            failureHandler.onAuthenticationFailure(request, response, e)
-        }
+    try {
+      val authResult = attemptAuthentication(request)
+      if (authResult.isAuthenticated) {
+        successHandler.onAuthenticationSuccess(request, response, authResult)
+      }
+    } catch (e: AuthenticationException) {
+      SecurityContextHolder.clearContext()
+      failureHandler.onAuthenticationFailure(request, response, e)
     }
+  }
 
-    private fun attemptAuthentication(request: HttpServletRequest): Authentication {
-        val authentication = generateAuthRequest(request)
-        return authenticationManager.authenticate(authentication)
-    }
+  private fun attemptAuthentication(request: HttpServletRequest): Authentication {
+    val authentication = generateAuthRequest(request)
+    return authenticationManager.authenticate(authentication)
+  }
 
-    private fun generateAuthRequest(request: HttpServletRequest): OidcAuthenticationToken {
-        val provider = OAuth2Provider.valueOf(extractProvider(request))
-        val loginRequest = objectMapper.readValue(request.inputStream, OidcLoginRequest::class.java)
-        log.info { "OIDC Login request: provider=$provider & idToken=${loginRequest.idToken}" }
+  private fun generateAuthRequest(request: HttpServletRequest): OidcAuthenticationToken {
+    val provider = OAuth2Provider.valueOf(extractProvider(request))
+    val loginRequest = objectMapper.readValue(request.inputStream, OidcLoginRequest::class.java)
+    log.info { "OIDC Login request: provider=$provider & idToken=${loginRequest.idToken}" }
 
-        return OidcAuthenticationToken(loginRequest.toIdToken(), provider)
-    }
+    return OidcAuthenticationToken(loginRequest.toIdToken(), provider)
+  }
 
-    private fun extractProvider(request: HttpServletRequest): String {
-        val path = request.requestURI
-        return path.substringAfterLast("/")
-    }
+  private fun extractProvider(request: HttpServletRequest): String {
+    val path = request.requestURI
+    return path.substringAfterLast("/")
+  }
 }

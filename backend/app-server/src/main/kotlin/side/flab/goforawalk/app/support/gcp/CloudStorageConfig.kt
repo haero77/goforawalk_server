@@ -13,28 +13,28 @@ private val log = KotlinLogging.logger {}
 
 @Configuration
 class CloudStorageConfig(
-    private val properties: GcpProperties,
+  private val properties: GcpProperties,
 ) {
 
-    @Bean
-    fun storage(): Storage {
-        val storageBuilder = StorageOptions.newBuilder()
+  @Bean
+  fun storage(): Storage {
+    val storageBuilder = StorageOptions.newBuilder()
 
-        storageBuilder.setProjectId(properties.projectId)
-        val encodedKey = properties.storage.credentials.encodedKey
-        val decodedKey = decodeCredentials(encodedKey)
-        ByteArrayInputStream(decodedKey).use { inputStream ->
-            storageBuilder.setCredentials(
-                GoogleCredentials.fromStream(inputStream)
-            )
-        }
-
-        val storageService = storageBuilder.build().service
-        log.info { "GCP Cloud Storage initialized with project ID: ${properties.projectId}" }
-        return storageService
+    storageBuilder.setProjectId(properties.projectId)
+    val encodedKey = properties.storage.credentials.encodedKey
+    val decodedKey = decodeCredentials(encodedKey)
+    ByteArrayInputStream(decodedKey).use { inputStream ->
+      storageBuilder.setCredentials(
+        GoogleCredentials.fromStream(inputStream)
+      )
     }
 
-    private fun decodeCredentials(encodedKey: String): ByteArray {
-        return Base64.getDecoder().decode(encodedKey)
-    }
+    val storageService = storageBuilder.build().service
+    log.info { "GCP Cloud Storage initialized with project ID: ${properties.projectId}" }
+    return storageService
+  }
+
+  private fun decodeCredentials(encodedKey: String): ByteArray {
+    return Base64.getDecoder().decode(encodedKey)
+  }
 }

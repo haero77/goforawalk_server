@@ -14,45 +14,45 @@ import java.nio.charset.StandardCharsets
 
 @Component
 class UserLoginSuccessHandler(
-    private val tokenGenerator: AppAuthTokenProvider,
-    private val objectMapper: ObjectMapper
+  private val tokenGenerator: AppAuthTokenProvider,
+  private val objectMapper: ObjectMapper
 ) : AuthenticationSuccessHandler {
-    override fun onAuthenticationSuccess(
-        request: HttpServletRequest,
-        response: HttpServletResponse,
-        authentication: Authentication,
-    ) {
-        val authToken = authentication as UsernamePasswordAuthenticationToken
-        val userDetails = authToken.principal as AppUserDetails
+  override fun onAuthenticationSuccess(
+    request: HttpServletRequest,
+    response: HttpServletResponse,
+    authentication: Authentication,
+  ) {
+    val authToken = authentication as UsernamePasswordAuthenticationToken
+    val userDetails = authToken.principal as AppUserDetails
 
-        val appToken = tokenGenerator.generate(userDetails)
+    val appToken = tokenGenerator.generate(userDetails)
 
-        writeResponse(response, userDetails, appToken)
-    }
+    writeResponse(response, userDetails, appToken)
+  }
 
-    private fun writeResponse(
-        response: HttpServletResponse,
-        userDetails: AppUserDetails,
-        appToken: AppAuthToken
-    ) {
-        val loginResponse = ApiResponse(
-            UserLoginResponse(
-                userId = userDetails.getUserId(),
-                credentials = appToken,
-                userInfo = UserInfo(
-                    nickname = userDetails.nickname,
-                    email = userDetails.email
-                )
-            )
+  private fun writeResponse(
+    response: HttpServletResponse,
+    userDetails: AppUserDetails,
+    appToken: AppAuthToken
+  ) {
+    val loginResponse = ApiResponse(
+      UserLoginResponse(
+        userId = userDetails.getUserId(),
+        credentials = appToken,
+        userInfo = UserInfo(
+          nickname = userDetails.nickname,
+          email = userDetails.email
         )
+      )
+    )
 
-        response.status = HttpServletResponse.SC_OK
-        response.contentType = MediaType.APPLICATION_JSON_VALUE
-        response.characterEncoding = StandardCharsets.UTF_8.name()
+    response.status = HttpServletResponse.SC_OK
+    response.contentType = MediaType.APPLICATION_JSON_VALUE
+    response.characterEncoding = StandardCharsets.UTF_8.name()
 
-        response.writer.use { writer ->
-            writer.write(objectMapper.writeValueAsString(loginResponse))
-            writer.flush()
-        }
+    response.writer.use { writer ->
+      writer.write(objectMapper.writeValueAsString(loginResponse))
+      writer.flush()
     }
+  }
 }

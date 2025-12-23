@@ -6,12 +6,12 @@ import side.flab.goforawalk.app.domain.user.domain.UserReader
 
 @Service
 class UserDeleteService(
-    private val userReader: UserReader
+  private val userReader: UserReader
 ) {
 
-    @Transactional
-    fun delete(userId: Long) {
-        val user = userReader.getById(userId)
-        user.delete()
-    }
+  @Transactional
+  fun delete(userId: Long) {
+    val user = userReader.getById(userId)
+    user.delete()
+  }
 }

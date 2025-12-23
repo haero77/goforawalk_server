@@ -14,31 +14,31 @@ import side.flab.goforawalk.app.support.image.ImageUploader
 
 @Service
 class FootstepCreateService(
-    private val footstepCreator: FootstepCreator,
-    private val footstepDomainService: FootstepDomainService,
-    private val imageNameGenerator: FootstepImageNameGenerator,
-    private val imageUploader: ImageUploader,
-    private val userReader: UserReader,
-    private val footstepRepository: FootstepRepository
+  private val footstepCreator: FootstepCreator,
+  private val footstepDomainService: FootstepDomainService,
+  private val imageNameGenerator: FootstepImageNameGenerator,
+  private val imageUploader: ImageUploader,
+  private val userReader: UserReader,
+  private val footstepRepository: FootstepRepository
 ) {
-    fun createFootstep(request: FootStepCreateRequest): FootstepDetailResponse {
-        val user = userReader.getById(request.userId)
-        footstepDomainService.validateDailyFootstepLimit(user)
+  fun createFootstep(request: FootStepCreateRequest): FootstepDetailResponse {
+    val user = userReader.getById(request.userId)
+    footstepDomainService.validateDailyFootstepLimit(user)
 
-        val newFootstepId = createFootstep(user, request)
+    val newFootstepId = createFootstep(user, request)
 
-        val footstep = footstepRepository.findByIdFetchJoinUser(newFootstepId)!!
-        return FootstepDetailResponse.from(footstep)
-    }
+    val footstep = footstepRepository.findByIdFetchJoinUser(newFootstepId)!!
+    return FootstepDetailResponse.from(footstep)
+  }
 
-    private fun createFootstep(
-        user: User,
-        request: FootStepCreateRequest
-    ): Long {
-        val imageName = imageNameGenerator.generate(user.id!!)
-        val imageUrl = imageUploader.uploadImage(request.imageFile, imageName)
+  private fun createFootstep(
+    user: User,
+    request: FootStepCreateRequest
+  ): Long {
+    val imageName = imageNameGenerator.generate(user.id!!)
+    val imageUrl = imageUploader.uploadImage(request.imageFile, imageName)
 
-        val createDto = FootstepCreateDto(user, imageUrl, request.content)
-        return footstepCreator.create(createDto)
-    }
+    val createDto = FootstepCreateDto(user, imageUrl, request.content)
+    return footstepCreator.create(createDto)
+  }
 }

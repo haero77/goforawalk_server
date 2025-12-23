@@ -6,11 +6,11 @@ import side.flab.goforawalk.security.oauth2.validator.OidcIdTokenValidatorFactor
 
 @Configuration
 class OidcSecurityConfig {
-    @Bean
-    fun oAuth2OidcAuthenticationProvider(
-        idTokenValidatorFactory: OidcIdTokenValidatorFactory,
-        userService: OidcUserService,
-    ): OidcAuthenticationProvider {
-        return OidcAuthenticationProvider(idTokenValidatorFactory, userService)
-    }
+  @Bean
+  fun oAuth2OidcAuthenticationProvider(
+    idTokenValidatorFactory: OidcIdTokenValidatorFactory,
+    userService: OidcUserService,
+  ): OidcAuthenticationProvider {
+    return OidcAuthenticationProvider(idTokenValidatorFactory, userService)
+  }
 }
