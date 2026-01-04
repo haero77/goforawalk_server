@@ -5,10 +5,12 @@ plugins {
     id("io.spring.dependency-management") version "1.1.7"
     id("org.asciidoctor.jvm.convert") version "3.3.2"
     kotlin("plugin.jpa") version "1.9.25"
+    // https://docs.sentry.io/platforms/java/gradle/, Better Stack 사용을 위한 Sentry SDK 포함
+    id("io.sentry.jvm.gradle") version "5.12.2"
 }
 
 group = "side.flab"
-version = "0.0.1-SNAPSHOT"
+version = "1.2.0" // index.adoc에 자동으로 연동
 
 java {
     toolchain {
