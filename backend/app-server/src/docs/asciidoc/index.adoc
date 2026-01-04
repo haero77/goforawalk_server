@@ -1,4 +1,5 @@
 = 👟걷는 API 문서
+:revdate: {localdatetime}
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs

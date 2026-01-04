@@ -18,13 +18,12 @@ class SampleService(
 
     return sampleRepository.save(sampleEntity)
   }
+
+  fun throwSampleError(message: String?) {
+    throw RuntimeException(message ?: "샘플 에러 발생")
+  }
 }
 
 data class SampleCreateRequest(
-  val name: String
-)
-
-data class SampleResponse(
-  val id: Long,
   val name: String
 )

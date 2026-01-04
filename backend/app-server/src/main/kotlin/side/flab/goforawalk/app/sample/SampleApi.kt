@@ -10,17 +10,24 @@ class SampleApi(
   private val sampleService: SampleService,
   private val imageUploader: ImageUploader,
 ) {
-  @GetMapping("/hello")
+//  @GetMapping("/hello")
   fun helloWorld(): String {
     return "Hello World!"
   }
 
-  @PostMapping("/hello")
+//  @GetMapping("/error")
+  fun throwError(
+    @RequestParam(required = false) message: String?,
+  ) {
+    sampleService.throwSampleError(message)
+  }
+
+//  @PostMapping("/hello")
   fun helloWorld(@RequestBody request: HelloRequest): HelloResponse {
     return HelloResponse("Hello ${request.name}!")
   }
 
-  @PostMapping("/")
+//  @PostMapping("/")
   fun createSample(@RequestBody request: SampleCreateRequest): SampleEntity {
     return sampleService.createSample(request)
   }
